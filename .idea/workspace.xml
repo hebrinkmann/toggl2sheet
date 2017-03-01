@@ -2,13 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2836f0c8-0c2e-4bd7-b3b4-6f69df7e1ddb" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/de/henningbrinkmann/toggl2sheet/TimeSheetRecord.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/de/henningbrinkmann/toggl2sheet/TogglService.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/de/henningbrinkmann/toggl2sheet/TogglServiceTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/de/henningbrinkmann/toggl2sheet/TogglCSVParser.java" afterPath="$PROJECT_DIR$/src/main/java/de/henningbrinkmann/toggl2sheet/TogglCSVParser.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/de/henningbrinkmann/toggl2sheet/TogglRecord.java" afterPath="$PROJECT_DIR$/src/main/java/de/henningbrinkmann/toggl2sheet/TogglRecord.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/de/henningbrinkmann/toggl2sheet/TimeSheetRecord.java" afterPath="$PROJECT_DIR$/src/main/java/de/henningbrinkmann/toggl2sheet/TimeSheetRecord.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/de/henningbrinkmann/toggl2sheet/TogglService.java" afterPath="$PROJECT_DIR$/src/main/java/de/henningbrinkmann/toggl2sheet/TogglService.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/de/henningbrinkmann/toggl2sheet/TogglCSVParserTest.java" afterPath="$PROJECT_DIR$/src/test/java/de/henningbrinkmann/toggl2sheet/TogglCSVParserTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/de/henningbrinkmann/toggl2sheet/TogglServiceTest.java" afterPath="$PROJECT_DIR$/src/test/java/de/henningbrinkmann/toggl2sheet/TogglServiceTest.java" />
     </list>
     <ignored path="toggl2sheet.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -44,7 +42,7 @@
       <file leaf-file-name="TogglCSVParser.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/de/henningbrinkmann/toggl2sheet/TogglCSVParser.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="160">
+            <state relative-caret-position="80">
               <caret line="10" column="4" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -56,10 +54,12 @@
       <file leaf-file-name="TogglService.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/de/henningbrinkmann/toggl2sheet/TogglService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="672">
-              <caret line="42" column="4" selection-start-line="42" selection-start-column="4" selection-end-line="42" selection-end-column="4" />
+            <state relative-caret-position="348">
+              <caret line="28" column="94" selection-start-line="28" selection-start-column="94" selection-end-line="28" selection-end-column="94" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#530#531#0" expanded="true" />
+                <element signature="e#566#567#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -68,7 +68,7 @@
       <file leaf-file-name="ReferencePipeline.java" pinned="false" current-in-tab="false">
         <entry file="jar://$PROJECT_DIR$/../../jdk1.8.0_45/src.zip!/java/util/stream/ReferencePipeline.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-788">
+            <state relative-caret-position="6656">
               <caret line="498" column="0" selection-start-line="498" selection-start-column="0" selection-end-line="498" selection-end-column="0" />
               <folding />
             </state>
@@ -78,17 +78,17 @@
       <file leaf-file-name="TogglServiceTest.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/de/henningbrinkmann/toggl2sheet/TogglServiceTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="260">
+              <caret line="48" column="27" selection-start-line="48" selection-start-column="27" selection-end-line="48" selection-end-column="27" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="workspace.xml" pinned="false" current-in-tab="true">
+      <file leaf-file-name="workspace.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-4368">
+            <state relative-caret-position="0">
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
@@ -98,8 +98,8 @@
       <file leaf-file-name="TogglCSVParserTest.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/de/henningbrinkmann/toggl2sheet/TogglCSVParserTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="160">
-              <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+            <state relative-caret-position="224">
+              <caret line="20" column="69" selection-start-line="20" selection-start-column="69" selection-end-line="20" selection-end-column="69" />
               <folding />
             </state>
           </provider>
@@ -115,17 +115,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TimeSheetRecord.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="TimeSheetRecord.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/de/henningbrinkmann/toggl2sheet/TimeSheetRecord.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="83" column="71" selection-start-line="83" selection-start-column="71" selection-end-line="83" selection-end-column="71" />
+            <state relative-caret-position="487">
+              <caret line="96" column="30" selection-start-line="96" selection-start-column="30" selection-end-line="96" selection-end-column="30" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2281#2282#0" expanded="true" />
-                <element signature="e#2350#2351#0" expanded="true" />
-                <element signature="e#3059#3060#0" expanded="true" />
-                <element signature="e#3087#3088#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -134,7 +130,7 @@
       <file leaf-file-name="TogglRecord.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/de/henningbrinkmann/toggl2sheet/TogglRecord.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
+            <state relative-caret-position="864">
               <caret line="57" column="9" selection-start-line="57" selection-start-column="9" selection-end-line="57" selection-end-column="9" />
               <folding>
                 <element signature="e#4025#4026#0" expanded="true" />
@@ -177,12 +173,13 @@
         <option value="$PROJECT_DIR$/src/main/resources/log4j2.xml" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/resources/log4j.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/de/henningbrinkmann/toggl2sheet/TimeSheetRecord.java" />
-        <option value="$PROJECT_DIR$/src/test/java/de/henningbrinkmann/toggl2sheet/TogglServiceTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/de/henningbrinkmann/toggl2sheet/TogglCSVParser.java" />
-        <option value="$PROJECT_DIR$/src/test/java/de/henningbrinkmann/toggl2sheet/TogglCSVParserTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/de/henningbrinkmann/toggl2sheet/TogglRecord.java" />
+        <option value="$PROJECT_DIR$/.idea/workspace.xml" />
+        <option value="$PROJECT_DIR$/src/test/java/de/henningbrinkmann/toggl2sheet/TogglCSVParserTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/de/henningbrinkmann/toggl2sheet/TogglService.java" />
+        <option value="$PROJECT_DIR$/src/test/java/de/henningbrinkmann/toggl2sheet/TogglServiceTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/de/henningbrinkmann/toggl2sheet/TimeSheetRecord.java" />
       </list>
     </option>
   </component>
@@ -206,7 +203,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="width" value="1920" />
+    <option name="x" value="4" />
+    <option name="width" value="1916" />
     <option name="height" value="1040" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -234,8 +232,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -330,7 +329,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -680,9 +678,9 @@
     <recent_temporary>
       <list size="4">
         <item index="0" class="java.lang.String" itemvalue="JUnit.TogglServiceTest.getTimeSheetRecords" />
-        <item index="1" class="java.lang.String" itemvalue="JUnit.TogglServiceTest.getRecordsByDay" />
-        <item index="2" class="java.lang.String" itemvalue="JUnit.TogglServiceTest.test" />
-        <item index="3" class="java.lang.String" itemvalue="JUnit.TogglCSVParserTest.parse" />
+        <item index="1" class="java.lang.String" itemvalue="JUnit.TogglCSVParserTest.parse" />
+        <item index="2" class="java.lang.String" itemvalue="JUnit.TogglServiceTest.getRecordsByDay" />
+        <item index="3" class="java.lang.String" itemvalue="JUnit.TogglServiceTest.test" />
       </list>
     </recent_temporary>
     <configuration name="&lt;template&gt;" type="TestNG" default="true" selected="false">
@@ -704,7 +702,8 @@
       <updated>1488358779309</updated>
       <workItem from="1488358790515" duration="2607000" />
       <workItem from="1488361451754" duration="3061000" />
-      <workItem from="1488370697661" duration="7160000" />
+      <workItem from="1488370697661" duration="7348000" />
+      <workItem from="1488385353489" duration="2502000" />
     </task>
     <task id="LOCAL-00001" summary="Updated log4j.xml">
       <created>1488377551457</created>
@@ -713,27 +712,26 @@
       <option name="project" value="LOCAL" />
       <updated>1488377551457</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Removed .idea from version tracking&#10;">
+      <created>1488378013616</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1488378013616</updated>
+    </task>
+    <task id="LOCAL-00003" summary="TimeSheetRecords">
+      <created>1488378085115</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1488378085115</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="TogglServiceTest_getRecordsByDay - 2017.03.01 at 14h 50m 06s.xml">
-      <configuration name="TogglServiceTest.getRecordsByDay" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="TogglServiceTest_getRecordsByDay - 2017.03.01 at 14h 54m 03s.xml">
-      <configuration name="TogglServiceTest.getRecordsByDay" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="TogglServiceTest_getRecordsByDay - 2017.03.01 at 14h 55m 02s.xml">
-      <configuration name="TogglServiceTest.getRecordsByDay" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="TogglServiceTest_getRecordsByDay - 2017.03.01 at 14h 55m 31s.xml">
-      <configuration name="TogglServiceTest.getRecordsByDay" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="TogglServiceTest_getRecordsByDay - 2017.03.01 at 14h 56m 14s.xml">
-      <configuration name="TogglServiceTest.getRecordsByDay" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="TogglServiceTest_getRecordsByDay - 2017.03.01 at 14h 56m 39s.xml">
-      <configuration name="TogglServiceTest.getRecordsByDay" configurationId="JUnit" />
+    <history-entry file="TogglCSVParserTest_parse - 2017.03.01 at 17h 24m 10s.xml">
+      <configuration name="TogglCSVParserTest.parse" configurationId="JUnit" />
     </history-entry>
     <history-entry file="TogglServiceTest_getRecordsByDay - 2017.03.01 at 14h 58m 46s.xml">
       <configuration name="TogglServiceTest.getRecordsByDay" configurationId="JUnit" />
@@ -747,13 +745,28 @@
     <history-entry file="TogglServiceTest_getTimeSheetRecords - 2017.03.01 at 15h 07m 10s.xml">
       <configuration name="TogglServiceTest.getTimeSheetRecords" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="TogglServiceTest_getTimeSheetRecords - 2017.03.01 at 17h 38m 59s.xml">
+      <configuration name="TogglServiceTest.getTimeSheetRecords" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TogglServiceTest_getTimeSheetRecords - 2017.03.01 at 17h 40m 59s.xml">
+      <configuration name="TogglServiceTest.getTimeSheetRecords" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TogglServiceTest_getTimeSheetRecords - 2017.03.01 at 17h 44m 50s.xml">
+      <configuration name="TogglServiceTest.getTimeSheetRecords" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TogglServiceTest_getTimeSheetRecords - 2017.03.01 at 17h 47m 09s.xml">
+      <configuration name="TogglServiceTest.getTimeSheetRecords" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TogglServiceTest_getTimeSheetRecords - 2017.03.01 at 17h 50m 45s.xml">
+      <configuration name="TogglServiceTest.getTimeSheetRecords" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="12828000" />
+    <option name="totallyTimeSpent" value="15518000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1920" height="1040" extended-state="0" />
-    <editor active="true" />
+    <frame x="4" y="0" width="1916" height="1040" extended-state="0" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -761,7 +774,7 @@
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32929516" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32929516" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -793,7 +806,9 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Updated log4j.xml" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated log4j.xml" />
+    <MESSAGE value="Removed .idea from version tracking&#10;" />
+    <MESSAGE value="TimeSheetRecords" />
+    <option name="LAST_COMMIT_MESSAGE" value="TimeSheetRecords" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -802,6 +817,109 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="608">
+          <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/de/henningbrinkmann/toggl2sheet/TogglCSVParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="10" column="4" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/de/henningbrinkmann/toggl2sheet/TogglService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="528">
+          <caret line="42" column="4" selection-start-line="42" selection-start-column="4" selection-end-line="42" selection-end-column="4" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#530#531#0" expanded="true" />
+            <element signature="e#566#567#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../../jdk1.8.0_45/src.zip!/java/util/stream/ReferencePipeline.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6656">
+          <caret line="498" column="0" selection-start-line="498" selection-start-column="0" selection-end-line="498" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/de/henningbrinkmann/toggl2sheet/TogglServiceTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/de/henningbrinkmann/toggl2sheet/TogglCSVParserTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/log4j.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="12" column="22" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/de/henningbrinkmann/toggl2sheet/TimeSheetRecord.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1328">
+          <caret line="83" column="71" selection-start-line="83" selection-start-column="71" selection-end-line="83" selection-end-column="71" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/de/henningbrinkmann/toggl2sheet/TogglRecord.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="864">
+          <caret line="57" column="9" selection-start-line="57" selection-start-column="9" selection-end-line="57" selection-end-column="9" />
+          <folding>
+            <element signature="e#4025#4026#0" expanded="true" />
+            <element signature="e#4072#4073#0" expanded="true" />
+            <element signature="e#4099#4100#0" expanded="true" />
+            <element signature="e#4127#4128#0" expanded="true" />
+            <element signature="e#4152#4153#0" expanded="true" />
+            <element signature="e#4178#4179#0" expanded="true" />
+            <element signature="e#4204#4205#0" expanded="true" />
+            <element signature="e#4262#4263#0" expanded="true" />
+            <element signature="e#4288#4289#0" expanded="true" />
+            <element signature="e#4317#4318#0" expanded="true" />
+            <element signature="e#4344#4345#0" expanded="true" />
+            <element signature="e#4374#4375#0" expanded="true" />
+            <element signature="e#4405#4406#0" expanded="true" />
+            <element signature="e#4439#4440#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="608">
@@ -840,7 +958,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -905,7 +1022,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -938,7 +1054,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -952,7 +1067,7 @@
     </entry>
     <entry file="jar://$PROJECT_DIR$/../../jdk1.8.0_45/src.zip!/java/util/stream/ReferencePipeline.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-788">
+        <state relative-caret-position="6656">
           <caret line="498" column="0" selection-start-line="498" selection-start-column="0" selection-end-line="498" selection-end-column="0" />
           <folding />
         </state>
@@ -966,23 +1081,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/de/henningbrinkmann/toggl2sheet/TimeSheetRecord.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="83" column="71" selection-start-line="83" selection-start-column="71" selection-end-line="83" selection-end-column="71" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2281#2282#0" expanded="true" />
-            <element signature="e#2350#2351#0" expanded="true" />
-            <element signature="e#3059#3060#0" expanded="true" />
-            <element signature="e#3087#3088#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/de/henningbrinkmann/toggl2sheet/TogglCSVParser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
+        <state relative-caret-position="80">
           <caret line="10" column="4" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -990,17 +1091,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/de/henningbrinkmann/toggl2sheet/TogglCSVParserTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/de/henningbrinkmann/toggl2sheet/TogglRecord.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
+        <state relative-caret-position="864">
           <caret line="57" column="9" selection-start-line="57" selection-start-column="9" selection-end-line="57" selection-end-column="9" />
           <folding>
             <element signature="e#4025#4026#0" expanded="true" />
@@ -1021,17 +1114,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/de/henningbrinkmann/toggl2sheet/TogglService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="672">
-          <caret line="42" column="4" selection-start-line="42" selection-start-column="4" selection-end-line="42" selection-end-column="4" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/de/henningbrinkmann/toggl2sheet/TogglServiceTest.java">
+    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -1039,11 +1122,41 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+    <entry file="file://$PROJECT_DIR$/src/test/java/de/henningbrinkmann/toggl2sheet/TogglCSVParserTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4368">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="224">
+          <caret line="20" column="69" selection-start-line="20" selection-start-column="69" selection-end-line="20" selection-end-column="69" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/de/henningbrinkmann/toggl2sheet/TogglService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="348">
+          <caret line="28" column="94" selection-start-line="28" selection-start-column="94" selection-end-line="28" selection-end-column="94" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#530#531#0" expanded="true" />
+            <element signature="e#566#567#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/de/henningbrinkmann/toggl2sheet/TogglServiceTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="260">
+          <caret line="48" column="27" selection-start-line="48" selection-start-column="27" selection-end-line="48" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/de/henningbrinkmann/toggl2sheet/TimeSheetRecord.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="487">
+          <caret line="96" column="30" selection-start-line="96" selection-start-column="30" selection-end-line="96" selection-end-column="30" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
