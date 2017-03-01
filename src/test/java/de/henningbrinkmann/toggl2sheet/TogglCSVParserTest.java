@@ -3,6 +3,7 @@ package de.henningbrinkmann.toggl2sheet;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
@@ -17,7 +18,7 @@ public class TogglCSVParserTest {
         final InputStreamReader reader = getInputStreamReader();
 
         final List<TogglRecord> togglRecords = testee.parse(reader);
-        logger.info(togglRecords);
+        logger.info(togglRecords.stream().map(TogglRecord::toString).collect(Collectors.joining("\n")));
     }
 
     private InputStreamReader getInputStreamReader() {

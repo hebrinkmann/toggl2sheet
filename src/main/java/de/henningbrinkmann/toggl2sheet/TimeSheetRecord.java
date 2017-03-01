@@ -66,8 +66,7 @@ public class TimeSheetRecord {
         return end.getMillis() - start.getMillis() - duration;
     }
 
-    @Override
-    public String toString() {
+    public String toTSV(Set<String> projects) {
         ArrayList<String> strings = new ArrayList<>();
 
         strings.add(dayFormatter.print(start));
@@ -75,7 +74,31 @@ public class TimeSheetRecord {
         strings.add(hourFormatter.print(end));
         strings.add(longToHourString(getPause()));
         strings.add(longToHourString(duration));
+
+        projects.stream().forEach(project -> {
+            Long duration = durationByProject.get(project);
+
+            strings.add(duration == null ? "     " : longToHourString(duration));
+        });
+
         strings.add(description.stream().collect(Collectors.joining(", ")));
+
+
+        return strings.stream().collect(Collectors.joining("\t"));
+    }
+
+    static public String toHeadings(Set<String> projects) {
+        ArrayList<String> strings = new ArrayList<>();
+
+        strings.add("Datum   ");
+        strings.add("Von  ");
+        strings.add("Bis  ");
+        strings.add("Pause");
+        strings.add("Arbeit");
+
+        projects.stream().forEach(project -> strings.add(String.format("%5s", project)));
+
+        strings.add("Tätigkeit");
 
         return strings.stream().collect(Collectors.joining("\t"));
     }

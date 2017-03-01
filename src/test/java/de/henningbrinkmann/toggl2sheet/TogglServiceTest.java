@@ -3,8 +3,10 @@ package de.henningbrinkmann.toggl2sheet;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.sql.Time;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
@@ -16,7 +18,7 @@ public class TogglServiceTest {
 
     @Test
     public void getRecordsByDay() throws Exception {
-        TogglService testee = new TogglService();
+        TogglService testee = new TogglService(null);
 
         testee.read(getInputStreamReader());
         Map<DateTime, List<TogglRecord>> result = testee.getRecordsByDay();
@@ -33,12 +35,18 @@ public class TogglServiceTest {
 
     @Test
     public void getTimeSheetRecords() throws IOException {
-        TogglService testee = new TogglService();
+        TogglService testee = new TogglService("VET");
 
         testee.read(getInputStreamReader());
         List<TimeSheetRecord> result = testee.getTimeSheetRecords();
 
-        logger.info(result.stream().map(TimeSheetRecord::toString).collect(Collectors.joining("\n")));
+        Set<String> projects = testee.getProjects();
+
+        String info = TimeSheetRecord.toHeadings(projects) + "\n" + result.stream()
+                .map(timeSheetRecord -> timeSheetRecord.toTSV(projects))
+                .collect(Collectors.joining("\n"));
+
+        logger.info("\n" + info);
     }
 
     private InputStreamReader getInputStreamReader() {
