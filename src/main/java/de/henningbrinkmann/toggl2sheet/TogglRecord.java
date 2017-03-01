@@ -1,17 +1,13 @@
 package de.henningbrinkmann.toggl2sheet;
 
-import javax.print.attribute.standard.DateTimeAtCompleted;
-
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.DateTimeParser;
 
-/**
- * Created by hso72 on 01.03.2017.
- */
-public class TogglRecord {
-    public static final DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+class TogglRecord {
+    private static final DateTimeFormatter hourFormatter = DateTimeFormat.forPattern("HH:mm");
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
 
     private String user;
     private String email;
@@ -35,7 +31,7 @@ public class TogglRecord {
         this.end = dateTimeFormatter.parseDateTime(csvRow[9] + " " + csvRow[10]);
     }
 
-    public TogglRecord(TogglRecord other) {
+    private TogglRecord(TogglRecord other) {
         this.user = other.user;
         this.email = other.email;
         this.client = other.client;
@@ -47,6 +43,7 @@ public class TogglRecord {
         this.end = other.end;
     }
 
+    @SuppressWarnings("SimplifiableIfStatement")
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -59,8 +56,7 @@ public class TogglRecord {
         if (client != null ? !client.equals(that.client) : that.client != null) return false;
         if (project != null ? !project.equals(that.project) : that.project != null) return false;
         if (task != null ? !task.equals(that.task) : that.task != null) return false;
-        if (start != null ? !start.equals(that.start) : that.start != null) return false;
-        return end != null ? end.equals(that.end) : that.end == null;
+        return start != null ? start.equals(that.start) : that.start == null && (end != null ? end.equals(that.end) : that.end == null);
 
     }
 
@@ -88,12 +84,11 @@ public class TogglRecord {
                 ", billable=" + billable +
                 ", start=" + start +
                 ", end=" + end +
+                ", duration " + hourFormatter.print(new DateTime(getDuration(), DateTimeZone.UTC)) +
                 '}';
     }
 
-
-
-    public TogglRecord trim(long step) {
+    TogglRecord trim(long step) {
         TogglRecord result = new TogglRecord(this);
 
         result.start = new DateTime(trimMillis(result.start.getMillis(), step));
@@ -110,5 +105,33 @@ public class TogglRecord {
         }
 
         return millis - rest + step;
+    }
+
+    DateTime getStartDay() {
+        return start.withMillisOfDay(0);
+    }
+
+    DateTime getStart() {
+        return start;
+    }
+
+    DateTime getEnd() {
+        return end;
+    }
+
+    long getDuration() {
+        return end.getMillis() - start.getMillis();
+    }
+
+    String getClient() {
+        return client;
+    }
+
+    String getProject() {
+        return project;
+    }
+
+    String getDescription() {
+        return description;
     }
 }

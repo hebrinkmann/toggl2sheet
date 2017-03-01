@@ -7,11 +7,8 @@ import java.util.stream.Collectors;
 
 import au.com.bytecode.opencsv.CSVReader;
 
-/**
- * Created by hso72 on 01.03.2017.
- */
-public class TogglCSVParser {
-    public List<TogglRecord> parse(Reader reader) throws IOException {
+class TogglCSVParser {
+    List<TogglRecord> parse(Reader reader) throws IOException {
         final CSVReader csvReader = new CSVReader(reader);
 
         final List<String[]> lines = csvReader.readAll();
@@ -24,6 +21,6 @@ public class TogglCSVParser {
             }
 
             return null;
-        }).filter(tr -> tr != null).map(tr -> tr.trim(15 * 60 * 1000)).collect(Collectors.toList());
+        }).filter(tr -> tr != null).collect(Collectors.toList());
     }
 }
