@@ -9,17 +9,17 @@ class TogglRecord {
     private static final DateTimeFormatter hourFormatter = DateTimeFormat.forPattern("HH:mm");
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
 
-    private String user;
-    private String email;
-    private String client;
-    private String project;
-    private String task;
-    private String description;
-    private boolean billable;
+    private final String user;
+    private final String email;
+    private final String client;
+    private final String project;
+    private final String task;
+    private final String description;
+    private final boolean billable;
     private DateTime start;
     private DateTime end;
 
-    TogglRecord(String[] csvRow) {
+    TogglRecord(final String[] csvRow) {
         this.user = csvRow[0];
         this.email = csvRow[1];
         this.client = csvRow[2];
@@ -31,7 +31,7 @@ class TogglRecord {
         this.end = dateTimeFormatter.parseDateTime(csvRow[9] + " " + csvRow[10]);
     }
 
-    private TogglRecord(TogglRecord other) {
+    private TogglRecord(final TogglRecord other) {
         this.user = other.user;
         this.email = other.email;
         this.client = other.client;

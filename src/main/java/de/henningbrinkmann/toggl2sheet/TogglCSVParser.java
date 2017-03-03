@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import au.com.bytecode.opencsv.CSVReader;
 
 class TogglCSVParser {
-    List<TogglRecord> parse(Reader reader) throws IOException {
+    List<TogglRecord> parse(final Reader reader) throws IOException {
         final CSVReader csvReader = new CSVReader(reader);
 
         final List<String[]> lines = csvReader.readAll();

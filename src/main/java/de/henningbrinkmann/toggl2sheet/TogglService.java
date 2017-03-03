@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 import org.joda.time.DateTime;
 
 class TogglService {
-    private long timeStep = 15 * 60 * 1000;
+    private final long timeStep = 15 * 60 * 1000;
     private List<TogglRecord> togglRecords = new ArrayList<>();
     private final String client;
 
@@ -48,7 +48,7 @@ class TogglService {
     }
 
     Set<String> getProjects() {
-        return togglRecords.stream().map(togglRecord -> togglRecord.getProject()).collect(Collectors.toSet());
+        return togglRecords.stream().map(TogglRecord::getProject).collect(Collectors.toSet());
     }
 
     List<TimeSheetRecord> getTimeSheetRecords() {

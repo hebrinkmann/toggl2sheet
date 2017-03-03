@@ -1,9 +1,7 @@
 package de.henningbrinkmann.toggl2sheet;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.LongSummaryStatistics;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -14,21 +12,17 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-/**
- * Created by hso72 on 01.03.2017.
- */
-public class TimeSheetRecord {
-    public static final DateTimeFormatter dayFormatter = DateTimeFormat.forPattern("dd.MM.yy");
-    public static final DateTimeFormatter hourFormatter = DateTimeFormat.forPattern("HH:mm");
+class TimeSheetRecord {
+    private static final DateTimeFormatter dayFormatter = DateTimeFormat.forPattern("dd.MM.yy");
+    private static final DateTimeFormatter hourFormatter = DateTimeFormat.forPattern("HH:mm");
 
     final private DateTime start;
     final private DateTime end;
     final private long duration;
-    final private Map<String, Long> durationByClient;
     final private Map<String, Long> durationByProject;
     final private Set<String> description;
 
-    TimeSheetRecord(List<TogglRecord> togglRecords) {
+    TimeSheetRecord(final List<TogglRecord> togglRecords) {
         final Optional<TogglRecord> minStart = togglRecords.stream()
                 .min((a, b) -> a.getStart().compareTo(b.getStart()));
         if (minStart.isPresent()) {
@@ -47,27 +41,23 @@ public class TimeSheetRecord {
         this.duration = togglRecords.stream()
                 .collect(Collectors.summarizingLong(TogglRecord::getDuration)).getSum();
 
-        durationByClient = togglRecords.stream()
-                .collect(Collectors.toMap(TogglRecord::getClient,
-                        TogglRecord::getDuration,
-                        (a, b) -> a + b));
-        durationByProject = togglRecords.stream()
+       durationByProject = togglRecords.stream()
                 .collect(Collectors.toMap(TogglRecord::getProject,
                         TogglRecord::getDuration,
                         (a, b) -> a + b));
 
         description = togglRecords.stream()
-                .map(togglRecord -> togglRecord.getDescription())
+                .map(TogglRecord::getDescription)
                 .collect(Collectors.toSet());
     }
 
 
-    public long getPause() {
+    private long getPause() {
         return end.getMillis() - start.getMillis() - duration;
     }
 
-    public String toTSV(Set<String> projects) {
-        ArrayList<String> strings = new ArrayList<>();
+    String toTSV(final Set<String> projects) {
+        final ArrayList<String> strings = new ArrayList<>();
 
         strings.add(dayFormatter.print(start));
         strings.add(hourFormatter.print(start));
@@ -75,8 +65,8 @@ public class TimeSheetRecord {
         strings.add(longToHourString(getPause()));
         strings.add(longToHourString(duration));
 
-        projects.stream().forEach(project -> {
-            Long duration = durationByProject.get(project);
+        projects.forEach(project -> {
+            final Long duration = durationByProject.get(project);
 
             strings.add(duration == null ? "     " : longToHourString(duration));
         });
@@ -87,8 +77,8 @@ public class TimeSheetRecord {
         return strings.stream().collect(Collectors.joining("\t"));
     }
 
-    static public String toHeadings(Set<String> projects) {
-        ArrayList<String> strings = new ArrayList<>();
+    static String toHeadings(final Set<String> projects) {
+        final ArrayList<String> strings = new ArrayList<>();
 
         strings.add("Datum   ");
         strings.add("Von  ");
@@ -96,20 +86,20 @@ public class TimeSheetRecord {
         strings.add("Pause");
         strings.add("Arbeit");
 
-        projects.stream().forEach(project -> strings.add(String.format("%5s", project)));
+        projects.forEach(project -> strings.add(String.format("%5s", project)));
 
         strings.add("Tätigkeit");
 
         return strings.stream().collect(Collectors.joining("\t"));
     }
 
-    public String longToHourString(long millis) {
+    private String longToHourString(final long millis) {
         final DateTime dateTime = new DateTime(millis, DateTimeZone.UTC);
 
         return hourFormatter.print(dateTime);
     }
 
-    public DateTime getStart() {
+    DateTime getStart() {
         return start;
     }
 }
