@@ -3,14 +3,22 @@ package de.henningbrinkmann.toggl2sheet;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Collectors.*;
 
 import org.joda.time.DateTime;
+
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.summingLong;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 
 class TogglService {
     private final long timeStep = 15 * 60 * 1000;
@@ -28,7 +36,7 @@ class TogglService {
                 .stream()
                 .filter(togglRecord -> client == null || client.equals(togglRecord.getClient()))
                 .map(togglRecord -> togglRecord.trim(timeStep))
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     Map<DateTime, List<TogglRecord>> getRecordsByDay() {
@@ -44,7 +52,7 @@ class TogglService {
             return result;
         };
 
-        return togglRecords.stream().collect(Collectors.toMap(keyMapper, valueMapper, mergeFunction));
+        return togglRecords.stream().collect(toMap(keyMapper, valueMapper, mergeFunction));
     }
 
     Set<String> getProjects() {
@@ -59,4 +67,30 @@ class TogglService {
                 .collect(Collectors.toList());
     }
 
+    String getEffortByWeekAndProject() {
+        final Map<Integer, Map<String, Long>> byWeekAndProject = togglRecords.stream()
+                .collect(groupingBy(record -> record.getStart().getWeekOfWeekyear(),
+                        groupingBy(TogglRecord::getProject, Collectors.summingLong(TogglRecord::getDuration))));
+
+
+        final Map<Integer, Long> byWeek = byWeekAndProject.entrySet()
+                .stream()
+                .collect(groupingBy(Map.Entry::getKey,
+                        Collectors.summingLong(entry1 -> entry1.getValue()
+                                .values()
+                                .stream()
+                                .mapToLong(l -> l)
+                                .sum())));
+
+        return byWeekAndProject.entrySet().stream().map(entry -> {
+            final String collect = entry.getValue()
+                    .entrySet()
+                    .stream()
+                    .map(entry1 -> "  " + entry1.getKey() + ":\t" + Util.longToHourString(entry1.getValue()))
+                    .collect(joining("\n"));
+
+            return "KW " + entry.getKey() + ":\n" + collect + "\n  Gesamt:\t" + Util.longToHourString(byWeek.get(entry.getKey()));
+
+        }).collect(joining("\n"));
+    }
 }

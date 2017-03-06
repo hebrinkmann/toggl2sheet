@@ -8,13 +8,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 class TimeSheetRecord {
-    private static final DateTimeFormatter dayFormatter = DateTimeFormat.forPattern("dd.MM.yy");
-    private static final DateTimeFormatter hourFormatter = DateTimeFormat.forPattern("HH:mm");
 
     final private DateTime start;
     final private DateTime end;
@@ -59,16 +54,16 @@ class TimeSheetRecord {
     String toTSV(final Set<String> projects) {
         final ArrayList<String> strings = new ArrayList<>();
 
-        strings.add(dayFormatter.print(start));
-        strings.add(hourFormatter.print(start));
-        strings.add(hourFormatter.print(end));
-        strings.add(longToHourString(getPause()));
-        strings.add(longToHourString(duration));
+        strings.add(Util.dayFormatter.print(start));
+        strings.add(Util.hourFormatter.print(start));
+        strings.add(Util.hourFormatter.print(end));
+        strings.add(Util.longToHourString(getPause()));
+        strings.add(Util.longToHourString(duration));
 
         projects.forEach(project -> {
             final Long duration = durationByProject.get(project);
 
-            strings.add(duration == null ? "     " : longToHourString(duration));
+            strings.add(duration == null ? "     " : Util.longToHourString(duration));
         });
 
         strings.add(description.stream().collect(Collectors.joining(", ")));
@@ -91,12 +86,6 @@ class TimeSheetRecord {
         strings.add("Tätigkeit");
 
         return strings.stream().collect(Collectors.joining("\t"));
-    }
-
-    private String longToHourString(final long millis) {
-        final DateTime dateTime = new DateTime(millis, DateTimeZone.UTC);
-
-        return hourFormatter.print(dateTime);
     }
 
     DateTime getStart() {

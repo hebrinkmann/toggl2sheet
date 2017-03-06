@@ -48,6 +48,14 @@ public class TogglServiceTest {
         logger.info("\n" + info);
     }
 
+    @Test
+    public void getEffortsByWeekAndProject() throws IOException {
+        TogglService testee = new TogglService("VET");
+
+        testee.read(getInputStreamReader());
+        logger.info(testee.getEffortByWeekAndProject());
+    }
+
     private InputStreamReader getInputStreamReader() {
         final InputStream inputStream = Thread.currentThread()
                 .getContextClassLoader()
