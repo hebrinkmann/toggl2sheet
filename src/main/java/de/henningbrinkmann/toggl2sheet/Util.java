@@ -1,7 +1,5 @@
 package de.henningbrinkmann.toggl2sheet;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -14,6 +12,6 @@ class Util {
         final long minutes = seconds / 60;
         final long hours = minutes / 60;
 
-        return String.format("%4d:%02d", hours, minutes % 60);
+        return String.format("%d:%02d", hours, minutes % 60);
     }
 }

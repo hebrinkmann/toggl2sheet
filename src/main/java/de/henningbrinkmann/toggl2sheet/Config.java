@@ -2,7 +2,6 @@ package de.henningbrinkmann.toggl2sheet;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -10,14 +9,16 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.GnuParser;
 import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Option;
+import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
+@SuppressWarnings("AccessStaticViaInstance")
 class Config {
     private File file;
     private String client;
     private Set<String> projects;
+    private long timeStep = 15 * 60 * 1000;
 
     Config(String[] args) {
         final CommandLine commandLine = getCommandLine(args);
@@ -32,26 +33,39 @@ class Config {
                     case "projects":
                         this.projects = Arrays.stream(option.getValues()).collect(Collectors.toSet());
                         break;
+                    case "timeStep":
+                        this.timeStep = Long.parseLong(option.getValue()) * 60L * 1000L;
+                        break;
                 }
             });
         }
     }
 
+    private Config(Builder builder) {
+        file = builder.file;
+        client = builder.client;
+        projects = builder.projects;
+        timeStep = builder.timeStep;
+    }
+
     private static Options getOptions() {
         Options options = new Options();
 
-        final Option input = new Option("i", "input", true, "input file path");
-        input.setRequired(true);
-        options.addOption(input);
-
-        final Option client = new Option("c", "client", true, "client");
-        client.setRequired(false);
-        options.addOption(client);
-
-        final Option projects = new Option("p", "projects", true, "projects");
-        projects.setRequired(false);
-        projects.setArgs(10);
-        options.addOption(projects);
+        options.addOption(OptionBuilder.withLongOpt("input")
+                .withDescription("input file path")
+                .hasArg()
+                .isRequired()
+                .create('i'));
+        options.addOption(OptionBuilder.withLongOpt("client").withDescription("client").hasArg().create('c'));
+        options.addOption(OptionBuilder.withLongOpt("timeStep")
+                .withDescription("time step in minutes")
+                .hasArg()
+                .withType(Number.class)
+                .create('t'));
+        options.addOption(OptionBuilder.withLongOpt("projects")
+                .withDescription("projects")
+                .hasOptionalArgs()
+                .create('p'));
 
         return options;
     }
@@ -83,5 +97,51 @@ class Config {
 
     Set<String> getProjects() {
         return projects;
+    }
+
+    long getTimeStep() {
+        return timeStep;
+    }
+
+    @SuppressWarnings("WeakerAccess")
+    public static final class Builder {
+        private File file;
+        private String client;
+        private Set<String> projects;
+        private long timeStep;
+
+        public Builder() {
+        }
+
+        public Builder(Config copy) {
+            this.file = copy.file;
+            this.client = copy.client;
+            this.projects = copy.projects;
+            this.timeStep = copy.timeStep;
+        }
+
+        public Builder withFile(File val) {
+            file = val;
+            return this;
+        }
+
+        public Builder withClient(String val) {
+            client = val;
+            return this;
+        }
+
+        public Builder withProjects(Set<String> val) {
+            projects = val;
+            return this;
+        }
+
+        public Builder withTimeStep(long val) {
+            timeStep = val;
+            return this;
+        }
+
+        public Config build() {
+            return new Config(this);
+        }
     }
 }

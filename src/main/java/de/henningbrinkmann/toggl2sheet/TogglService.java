@@ -18,21 +18,21 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
 class TogglService {
-    private final long timeStep = 15 * 60 * 1000;
     private List<TogglRecord> togglRecords = new ArrayList<>();
-    private final String client;
+    private final Config config;
 
-    TogglService(String client) {
-        this.client = client;
+    TogglService(Config config) {
+        this.config = config;
     }
 
     void read(Reader reader) throws IOException {
         TogglCSVParser parser = new TogglCSVParser();
+        String client = config.getClient();
 
         togglRecords = parser.parse(reader)
                 .stream()
                 .filter(togglRecord -> client == null || client.equals(togglRecord.getClient()))
-                .map(togglRecord -> togglRecord.trim(timeStep))
+                .map(togglRecord -> togglRecord.trim(config.getTimeStep()))
                 .collect(toList());
     }
 
