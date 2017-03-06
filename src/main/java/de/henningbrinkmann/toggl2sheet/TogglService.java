@@ -3,20 +3,17 @@ package de.henningbrinkmann.toggl2sheet;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Collectors.*;
 
 import org.joda.time.DateTime;
 
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.summingLong;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
