@@ -33,6 +33,6 @@ public class Main {
 
         System.out.println(config);
         System.out.println(info);
-        System.out.println(togglService.getEffortByWeekAndProject());
+        System.out.println(togglService.getEffortsByWeekAndProject());
     }
 }

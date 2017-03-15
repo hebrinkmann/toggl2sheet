@@ -62,7 +62,7 @@ public class TogglServiceTest {
         TogglService testee = new TogglService(new Config.Builder().withClient("VET").build());
 
         testee.read(getInputStreamReader());
-        logger.info(testee.getEffortByWeekAndProject());
+        logger.info(testee.getEffortsByWeekAndProject());
     }
 
     private InputStreamReader getInputStreamReader() {

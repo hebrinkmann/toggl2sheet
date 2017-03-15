@@ -82,7 +82,7 @@ class TogglService {
                 .collect(Collectors.toList());
     }
 
-    String getEffortByWeekAndProject() {
+    String getEffortsByWeekAndProject() {
         final Map<Integer, Map<String, Long>> byWeekAndProject = getTogglRecordStreamFiltered()
                 .collect(groupingBy(record -> record.getStart().getWeekOfWeekyear(),
                         groupingBy(TogglRecord::getProject, Collectors.summingLong(TogglRecord::getDuration))));
