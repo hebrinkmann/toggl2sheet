@@ -1,8 +1,12 @@
 package de.henningbrinkmann.toggl2sheet;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -17,12 +21,13 @@ public class TogglServiceTest {
 
     @Test
     public void getRecordsByDay() throws Exception {
-        TogglService testee = new TogglService(null);
+        Config config = new Config(new String[]{"-i", "C:\\Users\\hso72\\Downloads\\Toggl_time_entries_2017-03-01_to_2017-03-31 (2).csv"});
+        TogglService testee = new TogglService(config);
 
-        testee.read(getInputStreamReader());
+        testee.read(getInputStreamReader(config));
         Map<DateTime, List<TogglRecord>> result = testee.getRecordsByDay();
 
-        String info = result.entrySet().stream().map(entry ->
+        String info = result.entrySet().stream().sorted(Comparator.comparing(Map.Entry::getKey)).map(entry ->
                 entry.getKey().toString() + "\n\t" + entry.getValue()
                         .stream()
                         .map(TogglRecord::toString)
@@ -30,6 +35,10 @@ public class TogglServiceTest {
         ).collect(Collectors.joining("\n"));
 
         logger.info(info);
+    }
+
+    private Reader getInputStreamReader(Config config) throws FileNotFoundException {
+        return new InputStreamReader(new FileInputStream(config.getFile()));
     }
 
     @Test
