@@ -12,8 +12,9 @@ class TogglCSVParser {
         final CSVReader csvReader = new CSVReader(reader);
 
         final List<String[]> lines = csvReader.readAll();
+        final List<String[]> contentLines = lines.subList(1, lines.size() - 1);
 
-        return lines.stream().map(line -> {
+        return contentLines.stream().map(line -> {
             try {
                 return new TogglRecord(line);
             } catch (Exception e) {
