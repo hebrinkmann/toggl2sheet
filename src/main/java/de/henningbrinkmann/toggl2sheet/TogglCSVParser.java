@@ -12,7 +12,7 @@ class TogglCSVParser {
         final CSVReader csvReader = new CSVReader(reader);
 
         final List<String[]> lines = csvReader.readAll();
-        final List<String[]> contentLines = lines.subList(1, lines.size() - 1);
+        final List<String[]> contentLines = lines.subList(1, lines.size());
 
         return contentLines.stream().map(line -> {
             try {
