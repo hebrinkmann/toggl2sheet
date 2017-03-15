@@ -31,6 +31,7 @@ public class Main {
                 .map(timeSheetRecord -> timeSheetRecord.toTSV(finalProjects))
                 .collect(Collectors.joining("\n"));
 
+        System.out.println(config);
         System.out.println(info);
         System.out.println(togglService.getEffortByWeekAndProject());
     }
