@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.joda.time.DateTime;
 
@@ -49,7 +50,24 @@ class TogglService {
             return result;
         };
 
-        return togglRecords.stream().collect(toMap(keyMapper, valueMapper, mergeFunction));
+        return getTogglRecordStreamFiltered()
+                .collect(toMap(keyMapper, valueMapper, mergeFunction));
+    }
+
+    private Stream<TogglRecord> getTogglRecordStreamFiltered() {
+        return togglRecords.stream()
+                    .filter(togglRecord -> {
+                        if (config.getClient() != null && !togglRecord.getClient().equals(config.getClient())) {
+                            return false;
+                        }
+
+                        //noinspection RedundantIfStatement
+                        if (config.getProjects() != null && !config.getProjects().contains(togglRecord.getProject())) {
+                            return false;
+                        }
+
+                        return true;
+                    });
     }
 
     Set<String> getProjects() {
@@ -65,7 +83,7 @@ class TogglService {
     }
 
     String getEffortByWeekAndProject() {
-        final Map<Integer, Map<String, Long>> byWeekAndProject = togglRecords.stream()
+        final Map<Integer, Map<String, Long>> byWeekAndProject = getTogglRecordStreamFiltered()
                 .collect(groupingBy(record -> record.getStart().getWeekOfWeekyear(),
                         groupingBy(TogglRecord::getProject, Collectors.summingLong(TogglRecord::getDuration))));
 
