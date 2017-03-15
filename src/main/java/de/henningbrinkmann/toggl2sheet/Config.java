@@ -30,6 +30,7 @@ class Config {
                         break;
                     case "client":
                         this.client = option.getValue();
+                        break;
                     case "projects":
                         this.projects = Arrays.stream(option.getValues()).collect(Collectors.toSet());
                         break;
@@ -101,6 +102,16 @@ class Config {
 
     long getTimeStep() {
         return timeStep;
+    }
+
+    @Override
+    public String toString() {
+        return "Config{" +
+                "file=" + file +
+                ", client='" + client + '\'' +
+                ", projects=" + projects +
+                ", timeStep=" + timeStep +
+                '}';
     }
 
     @SuppressWarnings("WeakerAccess")
