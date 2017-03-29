@@ -119,7 +119,7 @@ class Config {
         private File file;
         private String client;
         private Set<String> projects;
-        private long timeStep;
+        private long timeStep = 15 * 60 * 1000;
 
         public Builder() {
         }
