@@ -3,6 +3,7 @@ package de.henningbrinkmann.toggl2sheet;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -32,7 +33,6 @@ class TogglService {
 
         togglRecords = parser.parse(reader)
                 .stream()
-                .filter(togglRecord -> client == null || client.equals(togglRecord.getClient()))
                 .map(togglRecord -> togglRecord.trim(config.getTimeStep()))
                 .collect(toList());
     }
@@ -56,18 +56,18 @@ class TogglService {
 
     private Stream<TogglRecord> getTogglRecordStreamFiltered() {
         return togglRecords.stream()
-                    .filter(togglRecord -> {
-                        if (config.getClient() != null && !togglRecord.getClient().equals(config.getClient())) {
-                            return false;
-                        }
+                .filter(togglRecord -> {
+                    if (config.getClient() != null && !togglRecord.getClient().equals(config.getClient())) {
+                        return false;
+                    }
 
-                        //noinspection RedundantIfStatement
-                        if (config.getProjects() != null && !config.getProjects().contains(togglRecord.getProject())) {
-                            return false;
-                        }
+                    //noinspection RedundantIfStatement
+                    if (config.getProjects() != null && !config.getProjects().contains(togglRecord.getProject())) {
+                        return false;
+                    }
 
-                        return true;
-                    });
+                    return true;
+                });
     }
 
     Set<String> getProjects() {
@@ -107,5 +107,26 @@ class TogglService {
             return "KW " + entry.getKey() + ":\n" + collect + "\n  Gesamt:\t" + Util.longToHourString(byWeek.get(entry.getKey()));
 
         }).collect(joining("\n"));
+    }
+
+    String getEffortsByDayAndDescription() {
+        final Map<DateTime, Map<String, Long>> byDayAndDescription = getTogglRecordStreamFiltered().collect(groupingBy(
+                TogglRecord::getStartDay,
+                groupingBy(TogglRecord::getDescription, Collectors.summingLong(TogglRecord::getDuration))));
+
+        return byDayAndDescription.entrySet()
+                .stream()
+                .sorted(Comparator.comparing(Map.Entry::getKey))
+                .map(entry -> {
+                    final Stream<String> stringStream = entry.getValue()
+                            .entrySet()
+                            .stream()
+                            .map(entry1 -> "  " + entry1.getKey() + ":\t" + Util.longToHourString(entry1.getValue()));
+
+                    final String collect = stringStream.collect(joining("\n"));
+
+                    return entry.getKey().toString() + "\n" + collect;
+                })
+                .collect(joining("\n"));
     }
 }

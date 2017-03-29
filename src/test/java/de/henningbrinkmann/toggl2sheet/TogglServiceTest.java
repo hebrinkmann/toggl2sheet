@@ -65,6 +65,14 @@ public class TogglServiceTest {
         logger.info(testee.getEffortsByWeekAndProject());
     }
 
+    @Test
+    public void getEffortsByDayAndDescription() throws IOException {
+        TogglService testee = new TogglService(new Config.Builder().withClient("VET").build());
+
+        testee.read(getInputStreamReader());
+        logger.info(testee.getEffortsByDayAndDescription());
+    }
+
     private InputStreamReader getInputStreamReader() {
         final InputStream inputStream = Thread.currentThread()
                 .getContextClassLoader()
@@ -72,5 +80,6 @@ public class TogglServiceTest {
 
         return new InputStreamReader(inputStream);
     }
+
 
 }
