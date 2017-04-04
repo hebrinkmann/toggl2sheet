@@ -2,7 +2,7 @@ package de.henningbrinkmann.toggl2sheet;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.Set;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.commons.cli.CommandLine;
@@ -17,7 +17,7 @@ import org.apache.commons.cli.ParseException;
 class Config {
     private File file;
     private String client;
-    private Set<String> projects;
+    private List<String> projects;
     private long timeStep = 15 * 60 * 1000;
 
     Config(String[] args) {
@@ -32,7 +32,7 @@ class Config {
                         this.client = option.getValue();
                         break;
                     case "projects":
-                        this.projects = Arrays.stream(option.getValues()).collect(Collectors.toSet());
+                        this.projects = Arrays.stream(option.getValues()).collect(Collectors.toList());
                         break;
                     case "timeStep":
                         this.timeStep = Long.parseLong(option.getValue()) * 60L * 1000L;
@@ -96,7 +96,7 @@ class Config {
         return file;
     }
 
-    Set<String> getProjects() {
+    List<String> getProjects() {
         return projects;
     }
 
@@ -118,7 +118,7 @@ class Config {
     public static final class Builder {
         private File file;
         private String client;
-        private Set<String> projects;
+        private List<String> projects;
         private long timeStep = 15 * 60 * 1000;
 
         public Builder() {
@@ -141,7 +141,7 @@ class Config {
             return this;
         }
 
-        public Builder withProjects(Set<String> val) {
+        public Builder withProjects(List<String> val) {
             projects = val;
             return this;
         }

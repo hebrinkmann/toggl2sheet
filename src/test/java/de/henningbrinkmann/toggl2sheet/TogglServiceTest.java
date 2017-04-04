@@ -9,7 +9,6 @@ import java.io.Reader;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
@@ -48,7 +47,7 @@ public class TogglServiceTest {
         testee.read(getInputStreamReader());
         List<TimeSheetRecord> result = testee.getTimeSheetRecords();
 
-        Set<String> projects = testee.getProjects();
+        List<String> projects = testee.getProjects();
 
         String info = TimeSheetRecord.toHeadings(projects) + "\n" + result.stream()
                 .map(timeSheetRecord -> timeSheetRecord.toTSV(projects))

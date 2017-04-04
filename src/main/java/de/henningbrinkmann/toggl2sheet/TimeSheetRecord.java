@@ -51,7 +51,7 @@ class TimeSheetRecord {
         return end.getMillis() - start.getMillis() - duration;
     }
 
-    String toTSV(final Set<String> projects) {
+    String toTSV(final List<String> projects) {
         final ArrayList<String> strings = new ArrayList<>();
 
         strings.add(Util.dayFormatter.print(start));
@@ -72,7 +72,7 @@ class TimeSheetRecord {
         return strings.stream().collect(Collectors.joining("\t"));
     }
 
-    static String toHeadings(final Set<String> projects) {
+    static String toHeadings(final List<String> projects) {
         final ArrayList<String> strings = new ArrayList<>();
 
         strings.add("Datum   ");

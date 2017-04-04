@@ -4,7 +4,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Main {
@@ -18,12 +17,12 @@ public class Main {
         final InputStreamReader inputStreamReader = new InputStreamReader(fis);
         togglService.read(inputStreamReader);
 
-        Set<String> projects = config.getProjects();
+        List<String> projects = config.getProjects();
         if (projects == null) {
             projects = togglService.getProjects();
         }
 
-        final Set<String> finalProjects = projects;
+        final List<String> finalProjects = projects;
 
         final List<TimeSheetRecord> timeSheetRecords = togglService.getTimeSheetRecords();
 

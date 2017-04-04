@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -70,8 +69,8 @@ class TogglService {
                 });
     }
 
-    Set<String> getProjects() {
-        return togglRecords.stream().map(TogglRecord::getProject).collect(Collectors.toSet());
+    List<String> getProjects() {
+        return togglRecords.stream().map(TogglRecord::getProject).collect(Collectors.toList());
     }
 
     List<TimeSheetRecord> getTimeSheetRecords() {
