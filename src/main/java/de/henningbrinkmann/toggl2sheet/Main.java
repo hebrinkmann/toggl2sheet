@@ -4,7 +4,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import org.joda.time.DateTime;
 
 public class Main {
 
@@ -26,9 +30,34 @@ public class Main {
 
         final List<TimeSheetRecord> timeSheetRecords = togglService.getTimeSheetRecords();
 
-        String info = TimeSheetRecord.toHeadings(finalProjects) + "\n" + timeSheetRecords.stream()
-                .map(timeSheetRecord -> timeSheetRecord.toTSV(finalProjects))
-                .collect(Collectors.joining("\n"));
+        StringBuffer info = new StringBuffer(TimeSheetRecord.toHeadings(finalProjects) + "\n");
+
+        Map<DateTime, TimeSheetRecord> timeSheetRecordsByDay = timeSheetRecords.stream()
+                .collect(Collectors.toMap(timeSheetRecord -> timeSheetRecord.getStart().withTimeAtStartOfDay(),
+                        Function.identity()));
+        List<DateTime> dateTimes = timeSheetRecordsByDay.keySet().stream().sorted().collect(Collectors.toList());
+
+        if (dateTimes.size() > 0) {
+            final DateTime startDate = config.getStartDate() != null ? config.getStartDate() : dateTimes.get(0);
+            final DateTime endDate = (config.getEndDate() != null ? config.getEndDate() : dateTimes.get(dateTimes.size() - 1));
+
+            DateTime date = startDate;
+
+            do {
+                TimeSheetRecord timeSheetRecord = timeSheetRecordsByDay.get(date);
+
+                if (timeSheetRecord == null) {
+                    timeSheetRecord = new TimeSheetRecord(date);
+                }
+
+                info.append(timeSheetRecord.toTSV(finalProjects)).append("\n");
+
+                date = date.plusDays(1);
+            } while (! endDate.isBefore(date));
+
+            info.append("Sollarbeitszeit: ").append(Util.getSollarbeitszeit(startDate, endDate)).append("\n");
+            info.append(togglService.getEfforts());
+        }
 
         System.out.println(config);
         System.out.println(info);

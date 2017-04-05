@@ -42,7 +42,7 @@ public class TogglServiceTest {
 
     @Test
     public void getTimeSheetRecords() throws IOException {
-        TogglService testee = new TogglService(new Config.Builder().withClient("VET").build());
+        TogglService testee = new TogglService(new Config());
 
         testee.read(getInputStreamReader());
         List<TimeSheetRecord> result = testee.getTimeSheetRecords();
@@ -58,7 +58,7 @@ public class TogglServiceTest {
 
     @Test
     public void getEffortsByWeekAndProject() throws IOException {
-        TogglService testee = new TogglService(new Config.Builder().withClient("VET").build());
+        TogglService testee = new TogglService(new Config());
 
         testee.read(getInputStreamReader());
         logger.info(testee.getEffortsByWeekAndProject());
@@ -66,7 +66,7 @@ public class TogglServiceTest {
 
     @Test
     public void getEffortsByDayAndDescription() throws IOException {
-        TogglService testee = new TogglService(new Config.Builder().withClient("VET").build());
+        TogglService testee = new TogglService(new Config());
 
         testee.read(getInputStreamReader());
         logger.info(testee.getEffortsByDayAndDescription());

@@ -1,16 +1,20 @@
 package de.henningbrinkmann.toggl2sheet;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.joda.time.DateTime;
 
 class TimeSheetRecord {
 
+    public static final String BLANK = "     ";
     final private DateTime start;
     final private DateTime end;
     final private long duration;
@@ -46,8 +50,26 @@ class TimeSheetRecord {
                 .collect(Collectors.toSet());
     }
 
+    TimeSheetRecord(DateTime dateTime) {
+        this.start = dateTime.withTimeAtStartOfDay();
+        this.end = null;
+        this.duration = 0;
+        this.durationByProject = new HashMap<>();
+        this.description = new HashSet<>();
+        String description = Util.getNoWorkday(this.start);
+        if (description == null) {
+            description = "?";
+        }
+        this.description.add(description);
+    }
+
 
     private long getPause() {
+
+        if (end == null || start == null) {
+            return 0;
+        }
+
         return end.getMillis() - start.getMillis() - duration;
     }
 
@@ -55,15 +77,20 @@ class TimeSheetRecord {
         final ArrayList<String> strings = new ArrayList<>();
 
         strings.add(Util.dayFormatter.print(start));
-        strings.add(Util.hourFormatter.print(start));
-        strings.add(Util.hourFormatter.print(end));
-        strings.add(Util.longToHourString(getPause()));
-        strings.add(Util.longToHourString(duration));
+
+        if (end != null) {
+            strings.add(Util.hourFormatter.print(start));
+            strings.add(Util.hourFormatter.print(end));
+            strings.add(Util.longToHourString(getPause()));
+            strings.add(Util.longToHourString(duration));
+        } else {
+            IntStream.range(0, 4).forEach(i -> strings.add(BLANK));
+        }
 
         projects.forEach(project -> {
             final Long duration = durationByProject.get(project);
 
-            strings.add(duration == null ? "     " : Util.longToHourString(duration));
+            strings.add(duration == null ? BLANK : Util.longToHourString(duration));
         });
 
         strings.add(description.stream().collect(Collectors.joining(", ")));

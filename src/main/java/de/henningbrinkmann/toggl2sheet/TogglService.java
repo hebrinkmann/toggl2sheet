@@ -81,6 +81,10 @@ class TogglService {
                 .collect(Collectors.toList());
     }
 
+    String getEfforts() {
+        return "Ist-Leistung: " + getTogglRecordStreamFiltered().mapToLong(TogglRecord::getDuration).sum() / 1000 / 60 / 60;
+    }
+
     String getEffortsByWeekAndProject() {
         final Map<Integer, Map<String, Long>> byWeekAndProject = getTogglRecordStreamFiltered()
                 .collect(groupingBy(record -> record.getStart().getWeekOfWeekyear(),

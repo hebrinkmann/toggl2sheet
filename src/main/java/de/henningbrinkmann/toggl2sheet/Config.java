@@ -12,6 +12,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.joda.time.DateTime;
 
 @SuppressWarnings("AccessStaticViaInstance")
 class Config {
@@ -19,6 +20,8 @@ class Config {
     private String client;
     private List<String> projects;
     private long timeStep = 15 * 60 * 1000;
+    private DateTime startDate;
+    private DateTime endDate;
 
     Config(String[] args) {
         final CommandLine commandLine = getCommandLine(args);
@@ -37,16 +40,19 @@ class Config {
                     case "timeStep":
                         this.timeStep = Long.parseLong(option.getValue()) * 60L * 1000L;
                         break;
+                    case "startDate":
+                        this.startDate = DateTime.parse(option.getValue());
+                        break;
+                    case "endDate":
+                        this.endDate = DateTime.parse(option.getValue());
+                        break;
                 }
             });
         }
     }
 
-    private Config(Builder builder) {
-        file = builder.file;
-        client = builder.client;
-        projects = builder.projects;
-        timeStep = builder.timeStep;
+    public Config() {
+
     }
 
     private static Options getOptions() {
@@ -57,7 +63,10 @@ class Config {
                 .hasArg()
                 .isRequired()
                 .create('i'));
-        options.addOption(OptionBuilder.withLongOpt("client").withDescription("client").hasArg().create('c'));
+        options.addOption(OptionBuilder.withLongOpt("client")
+                .withDescription("client")
+                .hasArg()
+                .create('c'));
         options.addOption(OptionBuilder.withLongOpt("timeStep")
                 .withDescription("time step in minutes")
                 .hasArg()
@@ -67,6 +76,14 @@ class Config {
                 .withDescription("projects")
                 .hasOptionalArgs()
                 .create('p'));
+        options.addOption(OptionBuilder.withLongOpt("startDate")
+                .withDescription("start date")
+                .hasArg()
+                .create('s'));
+        options.addOption(OptionBuilder.withLongOpt("endDate")
+                .withDescription("end date")
+                .hasArg()
+                .create('e'));
 
         return options;
     }
@@ -111,48 +128,16 @@ class Config {
                 ", client='" + client + '\'' +
                 ", projects=" + projects +
                 ", timeStep=" + timeStep +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
                 '}';
     }
 
-    @SuppressWarnings("WeakerAccess")
-    public static final class Builder {
-        private File file;
-        private String client;
-        private List<String> projects;
-        private long timeStep = 15 * 60 * 1000;
+    public DateTime getStartDate() {
+        return startDate;
+    }
 
-        public Builder() {
-        }
-
-        public Builder(Config copy) {
-            this.file = copy.file;
-            this.client = copy.client;
-            this.projects = copy.projects;
-            this.timeStep = copy.timeStep;
-        }
-
-        public Builder withFile(File val) {
-            file = val;
-            return this;
-        }
-
-        public Builder withClient(String val) {
-            client = val;
-            return this;
-        }
-
-        public Builder withProjects(List<String> val) {
-            projects = val;
-            return this;
-        }
-
-        public Builder withTimeStep(long val) {
-            timeStep = val;
-            return this;
-        }
-
-        public Config build() {
-            return new Config(this);
-        }
+    public DateTime getEndDate() {
+        return endDate;
     }
 }
