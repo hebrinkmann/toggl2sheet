@@ -70,7 +70,10 @@ class TogglService {
     }
 
     List<String> getProjects() {
-        return togglRecords.stream().map(TogglRecord::getProject).collect(Collectors.toList());
+        ArrayList<String> result = new ArrayList<>();
+        result.addAll(togglRecords.stream().map(TogglRecord::getProject).collect(Collectors.toSet()));
+
+        return result;
     }
 
     List<TimeSheetRecord> getTimeSheetRecords() {

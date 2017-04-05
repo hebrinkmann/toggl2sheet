@@ -56,7 +56,7 @@ class TimeSheetRecord {
         this.duration = 0;
         this.durationByProject = new HashMap<>();
         this.description = new HashSet<>();
-        String description = Util.getNoWorkday(this.start);
+        String description = NonWorkingdays.INSTANCE.getNonWorkingDay(start);
         if (description == null) {
             description = "?";
         }
