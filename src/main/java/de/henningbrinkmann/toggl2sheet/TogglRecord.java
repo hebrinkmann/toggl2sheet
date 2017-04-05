@@ -1,5 +1,6 @@
 package de.henningbrinkmann.toggl2sheet;
 
+import org.apache.commons.csv.CSVRecord;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
@@ -19,16 +20,18 @@ class TogglRecord {
     private DateTime start;
     private DateTime end;
 
-    TogglRecord(final String[] csvRow) {
-        this.user = csvRow[0];
-        this.email = csvRow[1];
-        this.client = csvRow[2];
-        this.project = csvRow[3];
-        this.task = csvRow[4];
-        this.description = csvRow[5];
-        this.billable = "Yes".equals(csvRow[6]);
-        this.start = dateTimeFormatter.parseDateTime(csvRow[7] + " " + csvRow[8]);
-        this.end = dateTimeFormatter.parseDateTime(csvRow[9] + " " + csvRow[10]);
+    TogglRecord(final CSVRecord csvRow) {
+        this.user = csvRow.get(TogglCSVHeader.User.getHeader());
+        this.email = csvRow.get(TogglCSVHeader.Email.getHeader());
+        this.client = csvRow.get(TogglCSVHeader.Client.getHeader());
+        this.project = csvRow.get(TogglCSVHeader.Project.getHeader());
+        this.task = csvRow.get(TogglCSVHeader.Task.getHeader());
+        this.description = csvRow.get(TogglCSVHeader.Description.getHeader());
+        this.billable = "Yes".equals(csvRow.get(TogglCSVHeader.Billable.getHeader()));
+        this.start = dateTimeFormatter.parseDateTime(csvRow.get(TogglCSVHeader.StartDate.getHeader()) + " " + csvRow.get(
+                TogglCSVHeader.StartTime.getHeader()));
+        this.end = dateTimeFormatter.parseDateTime(csvRow.get(TogglCSVHeader.EndDate.getHeader()) + " " + csvRow.get(
+                TogglCSVHeader.EndTime.getHeader()));
     }
 
     private TogglRecord(final TogglRecord other) {

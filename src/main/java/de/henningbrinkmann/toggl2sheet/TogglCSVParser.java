@@ -5,23 +5,19 @@ import java.io.Reader;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import au.com.bytecode.opencsv.CSVReader;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
 
 class TogglCSVParser {
     List<TogglRecord> parse(final Reader reader) throws IOException {
-        final CSVReader csvReader = new CSVReader(reader);
+        final CSVParser parser = CSVFormat.DEFAULT.withSkipHeaderRecord()
+                .withHeader(TogglCSVHeader.getHeaders())
+                .parse(reader);
 
-        final List<String[]> lines = csvReader.readAll();
-        final List<String[]> contentLines = lines.subList(1, lines.size());
-
-        return contentLines.stream().map(line -> {
-            try {
-                return new TogglRecord(line);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }).filter(tr -> tr != null).collect(Collectors.toList());
+        return parser.getRecords()
+                .stream()
+                .map(record -> new TogglRecord(record))
+                .filter(tr -> tr != null)
+                .collect(Collectors.toList());
     }
 }
