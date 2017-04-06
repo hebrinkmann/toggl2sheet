@@ -53,13 +53,15 @@ class TimeSheetRecord {
     TimeSheetRecord(DateTime dateTime) {
         this.start = dateTime.withTimeAtStartOfDay();
         this.end = null;
-        this.duration = 0;
         this.durationByProject = new HashMap<>();
         this.description = new HashSet<>();
         String description = NonWorkingdays.INSTANCE.getNonWorkingDay(start);
+        long duration = 0;
         if (description == null) {
             description = "?";
+            duration = 8 * 60 * 60 * 1000;
         }
+        this.duration = duration;
         this.description.add(description);
     }
 
@@ -82,10 +84,11 @@ class TimeSheetRecord {
             strings.add(Util.hourFormatter.print(start));
             strings.add(Util.hourFormatter.print(end));
             strings.add(Util.longToHourString(getPause()));
-            strings.add(Util.longToHourString(duration));
         } else {
-            IntStream.range(0, 4).forEach(i -> strings.add(BLANK));
+            IntStream.range(0, 3).forEach(i -> strings.add(BLANK));
         }
+
+        strings.add(Util.longToHourString(duration));
 
         projects.forEach(project -> {
             final Long duration = durationByProject.get(project);
@@ -117,5 +120,9 @@ class TimeSheetRecord {
 
     DateTime getStart() {
         return start;
+    }
+
+    public long getDuration() {
+        return duration;
     }
 }
