@@ -42,6 +42,7 @@ public class Main {
             final DateTime endDate = (config.getEndDate() != null ? config.getEndDate() : dateTimes.get(dateTimes.size() - 1));
 
             DateTime date = startDate;
+            long estimate = 0;
 
             do {
                 TimeSheetRecord timeSheetRecord = timeSheetRecordsByDay.get(date);
@@ -50,13 +51,18 @@ public class Main {
                     timeSheetRecord = new TimeSheetRecord(date);
                 }
 
+                estimate += timeSheetRecord.getDuration();
+
                 info.append(timeSheetRecord.toTSV(finalProjects)).append("\n");
 
                 date = date.plusDays(1);
-            } while (! endDate.isBefore(date));
+            } while (!endDate.isBefore(date));
 
-            info.append("Sollarbeitszeit: ").append(Util.getSollarbeitszeit(startDate, endDate)).append("\n");
-            info.append(togglService.getEfforts());
+            info.append("Sollarbeitszeit: ").append(Util.longToHourString(Util.getSollarbeitszeit(startDate, endDate))).
+                    append("\n");
+            info.append(togglService.getEfforts()).append("\n");
+
+            info.append("Prognose: " + Util.longToHourString(estimate));
         }
 
         System.out.println(config);
