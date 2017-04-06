@@ -9,6 +9,10 @@ class Util {
     static final DateTimeFormatter hourFormatter = DateTimeFormat.forPattern("HH:mm");
 
     static String longToHourString(final long millis) {
+        if (millis == 0) {
+            return "     ";
+        }
+
         final long seconds = millis / 1000;
         final long minutes = seconds / 60;
         final long hours = minutes / 60;
@@ -21,7 +25,7 @@ class Util {
         DateTime dateTime = start;
         do {
             if (NonWorkingdays.INSTANCE.getNonWorkingDay(dateTime) == null) {
-                result += 8;
+                result += 8 * 60 * 60 * 1000;
             }
 
             dateTime = dateTime.plusDays(1);
