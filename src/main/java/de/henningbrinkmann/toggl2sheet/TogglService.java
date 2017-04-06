@@ -85,7 +85,8 @@ class TogglService {
     }
 
     String getEfforts() {
-        return "Ist-Leistung: " + getTogglRecordStreamFiltered().mapToLong(TogglRecord::getDuration).sum() / 1000 / 60 / 60;
+        return "Ist-Leistung: " + Util.longToHourString(getTogglRecordStreamFiltered().mapToLong(TogglRecord::getDuration)
+                .sum());
     }
 
     String getEffortsByWeekAndProject() {
