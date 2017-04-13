@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -26,7 +27,7 @@ class TogglService {
         this.config = config;
     }
 
-    void read(Reader reader) throws IOException {
+    public void read(Reader reader) throws IOException {
         TogglCSVParser parser = new TogglCSVParser();
         String client = config.getClient();
 
@@ -135,5 +136,36 @@ class TogglService {
                     return entry.getKey().toString() + "\n" + collect;
                 })
                 .collect(joining("\n"));
+    }
+
+    Map<DateTime, TimeSheetRecord> getTimeTimeSheetRecordsByDate() {
+        Function<TimeSheetRecord, DateTime> keyFunction = timeSheetRecord -> timeSheetRecord.getStart()
+                .withTimeAtStartOfDay();
+        return getTimeSheetRecords().stream().collect(Collectors.toMap(keyFunction, Function.identity()));
+    }
+
+    Map<DateTime, TimeSheetRecord> getDateTimeTimeSheetRecordsByDateWithMissingDays(DateTime start, DateTime end) {
+        final Map<DateTime, TimeSheetRecord> timeTimeSheetRecordsByDate = getTimeTimeSheetRecordsByDate();
+        final Map<DateTime, TimeSheetRecord> result = new TreeMap<>();
+
+        DateTime dateTime = start;
+
+        if (dateTime == null) {
+            dateTime = DateTime.now().withDayOfMonth(1).withTimeAtStartOfDay();
+        }
+
+        while (dateTime.isBefore(end)) {
+            TimeSheetRecord timeSheetRecord = timeTimeSheetRecordsByDate.get(dateTime);
+
+            if (timeSheetRecord == null) {
+                timeSheetRecord = new TimeSheetRecord(dateTime);
+            }
+
+            result.put(dateTime, timeSheetRecord);
+
+            dateTime = dateTime.plusDays(1);
+        }
+
+        return result;
     }
 }
