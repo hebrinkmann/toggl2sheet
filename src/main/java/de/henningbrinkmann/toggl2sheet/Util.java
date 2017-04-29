@@ -23,13 +23,13 @@ class Util {
     static long getSollarbeitszeit(DateTime start, DateTime end) {
         long result = 0;
         DateTime dateTime = start;
-        do {
+        while (! end.isBefore(dateTime)) {
             if (NonWorkingdays.INSTANCE.getNonWorkingDay(dateTime) == null) {
                 result += 8 * 60 * 60 * 1000;
             }
 
             dateTime = dateTime.plusDays(1);
-        } while (! end.isBefore(dateTime));
+        }
 
         return result;
     }
