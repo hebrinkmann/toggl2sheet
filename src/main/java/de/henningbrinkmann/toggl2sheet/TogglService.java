@@ -142,28 +142,32 @@ class TogglService {
         return getTimeSheetRecords().stream().collect(Collectors.toMap(keyFunction, Function.identity()));
     }
 
-    Map<DateTime, TimeSheetRecord> getDateTimeTimeSheetRecordsByDateWithMissingDays(DateTime start, DateTime end) {
-        final Map<DateTime, TimeSheetRecord> timeTimeSheetRecordsByDate = getTimeTimeSheetRecordsByDate();
-        final Map<DateTime, TimeSheetRecord> result = new TreeMap<>();
-
+    List<TimeSheetRecord> getDateTimeSheetRecordsByDateWithMissingDays(DateTime start, DateTime end) {
+        final Map<DateTime, List<TimeSheetRecord>> timeSheetRecordsByDate = getTimeSheetRecordsByDate(true).stream()
+                .collect(groupingBy(t -> t.getStart().withTimeAtStartOfDay()));
+        final List<TimeSheetRecord> result = new ArrayList<>();
         DateTime dateTime = start;
-
-        if (dateTime == null) {
-            dateTime = DateTime.now().withDayOfMonth(1).withTimeAtStartOfDay();
-        }
-
+        if (dateTime == null) dateTime = DateTime.now().withDayOfMonth(1).withTimeAtStartOfDay();
         while (dateTime.isBefore(end)) {
-            TimeSheetRecord timeSheetRecord = timeTimeSheetRecordsByDate.get(dateTime);
-
-            if (timeSheetRecord == null) {
-                timeSheetRecord = new TimeSheetRecord(dateTime);
-            }
-
-            result.put(dateTime, timeSheetRecord);
+            List<TimeSheetRecord> timeSheetRecords = timeSheetRecordsByDate.get(dateTime);
+            TimeSheetRecord timeSheetRecord;
+            if (timeSheetRecords == null) result.add(new TimeSheetRecord(dateTime));
+            else
+                result.addAll(timeSheetRecords);
 
             dateTime = dateTime.plusDays(1);
         }
 
         return result;
+    }
+
+    List<TimeSheetRecord> getTimeSheetRecordsByDate(boolean byProject) {
+        Map<DateTime, Map<String, List<TogglRecord>>> collect = getTogglRecordStreamFiltered().collect(groupingBy(togglRecord -> togglRecord
+                .getStart()
+                .withTimeAtStartOfDay(), groupingBy(t -> byProject ? t.getProject() : "")));
+        return collect.entrySet().stream().flatMap(e -> e.getValue().entrySet().stream())
+                .map(e1 -> new TimeSheetRecord(e1.getValue()))
+                .sorted()
+                .collect(toList());
     }
 }

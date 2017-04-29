@@ -12,7 +12,7 @@ import java.util.stream.IntStream;
 
 import org.joda.time.DateTime;
 
-class TimeSheetRecord {
+class TimeSheetRecord implements Comparable<TimeSheetRecord> {
 
     public static final String BLANK = "     ";
     final private DateTime start;
@@ -124,5 +124,22 @@ class TimeSheetRecord {
 
     public long getDuration() {
         return duration;
+    }
+
+    @Override
+    public int compareTo(TimeSheetRecord o) {
+        int result = 0;
+
+        if (o == null) {
+            return 1;
+        }
+
+        result = start.compareTo(o.getStart());
+
+        if (result == 0) {
+            result = Long.compare(duration, o.getDuration());
+        }
+
+        return result;
     }
 }

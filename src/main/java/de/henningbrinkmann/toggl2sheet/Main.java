@@ -24,9 +24,9 @@ public class Main {
 
         final List<String> finalProjects = projects;
 
-        final Collection<TimeSheetRecord> timeSheetRecords = togglService.getDateTimeTimeSheetRecordsByDateWithMissingDays(
+        final Collection<TimeSheetRecord> timeSheetRecords = togglService.getDateTimeSheetRecordsByDateWithMissingDays(
                 config.getStartDate(),
-                config.getEndDate()).values();
+                config.getEndDate());
 
         StringBuffer info = new StringBuffer(TimeSheetRecord.toHeadings(finalProjects) + "\n");
 
