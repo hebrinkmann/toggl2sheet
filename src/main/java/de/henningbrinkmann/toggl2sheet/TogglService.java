@@ -105,15 +105,13 @@ class TogglService {
                                 .mapToLong(l -> l)
                                 .sum())));
 
-        return byWeekAndProject.entrySet().stream().map(entry -> {
+        return byWeekAndProject.entrySet().stream().sorted(Comparator.comparing(Map.Entry::getKey)).map(entry -> {
             final String collect = entry.getValue()
                     .entrySet()
                     .stream()
                     .map(entry1 -> "  " + entry1.getKey() + ":\t" + Util.longToHourString(entry1.getValue()))
                     .collect(joining("\n"));
-
             return "KW " + entry.getKey() + ":\n" + collect + "\n  Gesamt:\t" + Util.longToHourString(byWeek.get(entry.getKey()));
-
         }).collect(joining("\n"));
     }
 
