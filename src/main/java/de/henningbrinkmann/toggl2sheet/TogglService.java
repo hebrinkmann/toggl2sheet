@@ -148,7 +148,7 @@ class TogglService {
         final List<TimeSheetRecord> result = new ArrayList<>();
         DateTime dateTime = start;
         if (dateTime == null) dateTime = DateTime.now().withDayOfMonth(1).withTimeAtStartOfDay();
-        while (dateTime.isBefore(end)) {
+        while (!end.isBefore(dateTime)) {
             List<TimeSheetRecord> timeSheetRecords = timeSheetRecordsByDate.get(dateTime);
             TimeSheetRecord timeSheetRecord;
             if (timeSheetRecords == null) result.add(new TimeSheetRecord(dateTime));
