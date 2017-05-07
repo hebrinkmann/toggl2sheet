@@ -18,6 +18,7 @@ import io.rocketbase.toggl.api.GetDetailed;
 import io.rocketbase.toggl.api.TogglReportApi;
 import io.rocketbase.toggl.api.TogglReportApiBuilder;
 import io.rocketbase.toggl.api.model.DetailedResult;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 
 import static java.util.stream.Collectors.groupingBy;
@@ -26,6 +27,7 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
 class TogglService {
+    private static final Logger logger = Logger.getLogger(TogglService.class);
     private List<TogglRecord> togglRecords;
     private final Config config;
 
@@ -54,12 +56,26 @@ class TogglService {
                 .since(config.getStartDate().toDate())
                 .until(config.getEndDate().toDate());
 
-        DetailedResult detailedResult = detailed.get();
-        togglRecords = detailedResult.getData()
-                .stream()
-                .map(TogglRecord::new)
-                .map(togglRecord -> togglRecord.trim(config.getTimeStep()))
-                .collect(toList());
+
+        togglRecords = new ArrayList<>();
+
+        int page = 1;
+        while (true) {
+            DetailedResult detailedResult = detailed.page(page).get();
+            logger.info(String.format("Reading from Toggl-API: %d/%d",
+                    togglRecords.size(),
+                    detailedResult.getTotalCount()));
+            togglRecords.addAll(detailedResult.getData()
+                    .stream()
+                    .map(TogglRecord::new)
+                    .map(togglRecord -> togglRecord.trim(config.getTimeStep()))
+                    .collect(toList()));
+            page = page + 1;
+
+            if (togglRecords.size() >= detailedResult.getTotalCount()) {
+                break;
+            }
+        }
     }
 
     Map<DateTime, List<TogglRecord>> getRecordsByDay() {
