@@ -23,6 +23,7 @@ class Config {
     private DateTime startDate;
     private DateTime endDate;
     private boolean byProject = true;
+    private String apiToken;
 
     Config(String[] args) {
         final CommandLine commandLine = getCommandLine(args);
@@ -49,6 +50,9 @@ class Config {
                         break;
                     case "byProject":
                         this.byProject = Boolean.parseBoolean(option.getValue());
+                        break;
+                    case "apiToken":
+                        this.apiToken = option.getValue();
                         break;
                 }
             });
@@ -90,7 +94,10 @@ class Config {
                 .create('e'));
         options.addOption(OptionBuilder.withLongOpt("byProject")
                 .withDescription("one timesheet entry per project")
-                .withLongOpt("byProject")
+                .hasArg()
+                .create());
+        options.addOption(OptionBuilder.withLongOpt("apiToken")
+                .withDescription("API token for Toggl")
                 .hasArg()
                 .create());
 
@@ -135,6 +142,10 @@ class Config {
         return byProject;
     }
 
+    public String getApiToken() {
+        return apiToken;
+    }
+
     @Override
     public String toString() {
         return "Config{" +
@@ -145,6 +156,7 @@ class Config {
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", byProject=" + byProject +
+                ", apiToken='" + apiToken + '\'' +
                 '}';
     }
 

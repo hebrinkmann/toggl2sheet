@@ -15,10 +15,6 @@ public class Main {
 
         TogglService togglService = new TogglService(config);
 
-        final FileInputStream fis = new FileInputStream(config.getFile());
-        final InputStreamReader inputStreamReader = new InputStreamReader(fis);
-        togglService.read(inputStreamReader);
-
         List<String> projects = config.getProjects();
         if (projects == null) {
             projects = togglService.getProjects();

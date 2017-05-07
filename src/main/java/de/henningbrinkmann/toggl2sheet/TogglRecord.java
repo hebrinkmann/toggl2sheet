@@ -1,5 +1,6 @@
 package de.henningbrinkmann.toggl2sheet;
 
+import io.rocketbase.toggl.api.model.TimeEntry;
 import org.apache.commons.csv.CSVRecord;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -44,6 +45,18 @@ class TogglRecord {
         this.billable = other.billable;
         this.start = other.start;
         this.end = other.end;
+    }
+
+    public TogglRecord(TimeEntry timeEntry) {
+        this.user = timeEntry.getUser();
+        this.email = timeEntry.getUser();
+        this.client = timeEntry.getClient();
+        this.project = timeEntry.getProject();
+        this.task = timeEntry.getTask();
+        this.description = timeEntry.getDescription();
+        this.billable = timeEntry.getBillable();
+        this.start = timeEntry.getStart().withSecondOfMinute(0);
+        this.end = timeEntry.getEnd().withSecondOfMinute(0);
     }
 
     @SuppressWarnings("SimplifiableIfStatement")

@@ -34,6 +34,11 @@
             <artifactId>commons-csv</artifactId>
             <version>1.3</version>
         </dependency>
+        <dependency>
+            <groupId>io.rocketbase.toggl</groupId>
+            <artifactId>toggl-report-api</artifactId>
+            <version>1.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <properties>

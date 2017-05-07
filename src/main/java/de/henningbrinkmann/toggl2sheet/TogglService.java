@@ -1,5 +1,7 @@
 package de.henningbrinkmann.toggl2sheet;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
@@ -12,6 +14,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import io.rocketbase.toggl.api.GetDetailed;
+import io.rocketbase.toggl.api.TogglReportApi;
+import io.rocketbase.toggl.api.TogglReportApiBuilder;
+import io.rocketbase.toggl.api.model.DetailedResult;
 import org.joda.time.DateTime;
 
 import static java.util.stream.Collectors.groupingBy;
@@ -20,11 +26,12 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
 class TogglService {
-    private List<TogglRecord> togglRecords = new ArrayList<>();
+    private List<TogglRecord> togglRecords;
     private final Config config;
 
     TogglService(Config config) {
         this.config = config;
+        getTogglRecords();
     }
 
     public void read(Reader reader) throws IOException {
@@ -33,6 +40,24 @@ class TogglService {
 
         togglRecords = parser.parse(reader)
                 .stream()
+                .map(togglRecord -> togglRecord.trim(config.getTimeStep()))
+                .collect(toList());
+    }
+
+    public void readFromApi() {
+        TogglReportApi togglReportApi = new TogglReportApiBuilder().apiToken(config.getApiToken())
+                .userAgent("toggl2sheet")
+                .workspaceId(1397713)
+                .build();
+
+        GetDetailed detailed = togglReportApi.detailed()
+                .since(config.getStartDate().toDate())
+                .until(config.getEndDate().toDate());
+
+        DetailedResult detailedResult = detailed.get();
+        togglRecords = detailedResult.getData()
+                .stream()
+                .map(TogglRecord::new)
                 .map(togglRecord -> togglRecord.trim(config.getTimeStep()))
                 .collect(toList());
     }
@@ -55,7 +80,7 @@ class TogglService {
     }
 
     private Stream<TogglRecord> getTogglRecordStreamFiltered() {
-        return togglRecords.stream()
+        return getTogglRecords().stream()
                 .filter(togglRecord -> {
                     if (config.getClient() != null && !togglRecord.getClient().equals(config.getClient())) {
                         return false;
@@ -75,6 +100,23 @@ class TogglService {
         result.addAll(togglRecords.stream().map(TogglRecord::getProject).collect(Collectors.toSet()));
 
         return result;
+    }
+
+    private List<TogglRecord> getTogglRecords() {
+        if (togglRecords == null) {
+            if (config.getApiToken() != null) {
+                readFromApi();
+            } else {
+                try {
+                    FileReader fileReader = new FileReader(config.getFile());
+                    read(fileReader);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return togglRecords;
     }
 
     List<TimeSheetRecord> getTimeSheetRecords() {
