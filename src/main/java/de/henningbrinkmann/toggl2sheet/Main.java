@@ -8,6 +8,8 @@ import java.util.List;
 
 public class Main {
 
+    private static final String LF = System.getProperty("line.separator");
+
     public static void main(String args[]) throws IOException {
         final Config config = new Config(args);
 
@@ -28,18 +30,18 @@ public class Main {
                 config.getStartDate(),
                 config.getEndDate());
 
-        StringBuffer info = new StringBuffer(TimeSheetRecord.toHeadings(finalProjects) + "\n");
+        StringBuffer info = new StringBuffer(TimeSheetRecord.toHeadings(finalProjects) + LF);
 
-        timeSheetRecords.forEach(timeSheetRecord -> info.append(timeSheetRecord.toTSV(finalProjects)).append("\n"));
+        timeSheetRecords.forEach(timeSheetRecord -> info.append(timeSheetRecord.toTSV(finalProjects)).append(LF));
 
         long estimate = timeSheetRecords.stream().mapToLong(TimeSheetRecord::getDuration).sum();
 
         if (config.getStartDate() != null && config.getEndDate() != null) {
             info.append("Sollarbeitszeit: ").append(Util.longToHourString(Util.getSollarbeitszeit(config.getStartDate(), config.getEndDate()))).
-                    append("\n");
+                    append(LF);
         }
 
-        info.append(togglService.getEfforts()).append("\n");
+        info.append(togglService.getEfforts()).append(LF);
 
         info.append("Prognose: ").append(Util.longToHourString(estimate));
 
