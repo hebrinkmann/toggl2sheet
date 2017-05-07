@@ -22,6 +22,7 @@ class Config {
     private long timeStep = 15 * 60 * 1000;
     private DateTime startDate;
     private DateTime endDate;
+    private boolean byProject = true;
 
     Config(String[] args) {
         final CommandLine commandLine = getCommandLine(args);
@@ -45,6 +46,9 @@ class Config {
                         break;
                     case "endDate":
                         this.endDate = DateTime.parse(option.getValue());
+                        break;
+                    case "byProject":
+                        this.byProject = Boolean.parseBoolean(option.getValue());
                         break;
                 }
             });
@@ -84,6 +88,12 @@ class Config {
                 .withDescription("end date")
                 .hasArg()
                 .create('e'));
+        options.addOption(OptionBuilder.withLongOpt("byProject")
+                .withDescription("one timesheet entry per project")
+                .withLongOpt("byProject")
+                .hasArg()
+                .create());
+
 
         return options;
     }
@@ -130,6 +140,7 @@ class Config {
                 ", timeStep=" + timeStep +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
+                ", byProject=" + byProject +
                 '}';
     }
 
