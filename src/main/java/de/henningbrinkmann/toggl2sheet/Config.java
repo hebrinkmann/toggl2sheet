@@ -20,8 +20,8 @@ class Config {
     private String client;
     private List<String> projects;
     private long timeStep = 15 * 60 * 1000;
-    private DateTime startDate;
-    private DateTime endDate;
+    private DateTime startDate = DateTime.now().withTimeAtStartOfDay().withDayOfMonth(1);
+    private DateTime endDate = startDate.plusMonths(1).minusDays(1);
     private boolean byProject = true;
     private String apiToken;
 
@@ -69,7 +69,6 @@ class Config {
         options.addOption(OptionBuilder.withLongOpt("input")
                 .withDescription("input file path")
                 .hasArg()
-                .isRequired()
                 .create('i'));
         options.addOption(OptionBuilder.withLongOpt("client")
                 .withDescription("client")
