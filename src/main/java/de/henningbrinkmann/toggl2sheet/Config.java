@@ -131,6 +131,10 @@ class Config {
         return timeStep;
     }
 
+    public boolean isByProject() {
+        return byProject;
+    }
+
     @Override
     public String toString() {
         return "Config{" +
