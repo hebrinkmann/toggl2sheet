@@ -1,17 +1,31 @@
 package de.henningbrinkmann.toggl2sheet;
 
-import java.io.FileInputStream;
+import org.joda.time.DateTime;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.http.HttpRequest;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Collection;
 import java.util.List;
 
+@RestController
+@EnableAutoConfiguration
 public class Main {
 
     private static final String LF = System.getProperty("line.separator");
 
-    public static void main(String args[]) throws IOException {
-        final Config config = new Config(args);
+    private TogglService togglService;
+
+    @RequestMapping("/current")
+    String home(@RequestParam(value = "start", required = false) String start,
+                @RequestParam(value = "end", required = false) String end) {
+        ConfigBuilder configBuilder = new ConfigBuilder().setStartDate(start).setEndDate(end);
+
+        Config config = configBuilder.createConfig();
 
         TogglService togglService = new TogglService(config);
 
@@ -41,8 +55,12 @@ public class Main {
 
         info.append("Prognose: ").append(Util.longToHourString(estimate));
 
-        System.out.println(config);
-        System.out.println(info);
-        System.out.println(togglService.getEffortsByWeekAndProject());
+        info.append(togglService.getEffortsByWeekAndProject());
+
+        return info.toString();
+    }
+
+    public static void main(String args[]) throws IOException {
+        SpringApplication.run(Main.class, args);
     }
 }

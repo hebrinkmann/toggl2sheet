@@ -20,12 +20,15 @@ import io.rocketbase.toggl.api.TogglReportApiBuilder;
 import io.rocketbase.toggl.api.model.DetailedResult;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
+@Component
 class TogglService {
     private static final Logger logger = Logger.getLogger(TogglService.class);
     private List<TogglRecord> togglRecords;

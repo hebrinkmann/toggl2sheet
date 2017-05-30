@@ -13,6 +13,7 @@ import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.joda.time.DateTime;
+import org.springframework.http.HttpRequest;
 
 @SuppressWarnings("AccessStaticViaInstance")
 class Config {
@@ -61,6 +62,21 @@ class Config {
 
     public Config() {
 
+    }
+
+    public Config(File file, String client, List<String> projects, long timeStep, DateTime startDate, DateTime endDate, boolean byProject, String apiToken) {
+        this.file = file;
+        this.client = client;
+        this.projects = projects;
+        this.timeStep = timeStep;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.byProject = byProject;
+        this.apiToken = apiToken;
+    }
+
+    public Config(HttpRequest request) {
+        request.getURI();
     }
 
     private static Options getOptions() {
@@ -166,4 +182,6 @@ class Config {
     public DateTime getEndDate() {
         return endDate;
     }
+
+
 }
