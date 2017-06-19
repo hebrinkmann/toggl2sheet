@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.util.Collection;
 import java.util.List;
 
@@ -53,11 +54,30 @@ public class Main {
 
         info.append(togglService.getEfforts()).append(LF);
 
-        info.append("Prognose: ").append(Util.longToHourString(estimate));
+        info.append("Prognose: ").append(Util.longToHourString(estimate)).append(LF);
 
         info.append(togglService.getEffortsByWeekAndProject());
 
         return info.toString();
+    }
+
+    @RequestMapping("/timesheet")
+    public TimeSheet getTimeSheetRecords(@RequestParam(value = "start", required = false) String start,
+                                                     @RequestParam(value = "end", required = false) String end) {
+        ConfigBuilder configBuilder = new ConfigBuilder().setStartDate(start).setEndDate(end);
+
+        Config config = configBuilder.createConfig();
+
+        TogglService togglService = new TogglService(config);
+
+        final List<TimeSheetRecord> timeSheetRecords = togglService.getDateTimeSheetRecordsByDateWithMissingDays(
+                config.getStartDate(),
+                config.getEndDate());
+
+
+        List<String> projects = togglService.getProjects();
+
+        return new TimeSheet(timeSheetRecords, projects);
     }
 
     public static void main(String args[]) throws IOException {
