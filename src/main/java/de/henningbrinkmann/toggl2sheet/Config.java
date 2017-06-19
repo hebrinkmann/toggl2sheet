@@ -23,7 +23,7 @@ class Config {
     private long timeStep = 15 * 60 * 1000;
     private DateTime startDate = DateTime.now().withTimeAtStartOfDay().withDayOfMonth(1);
     private DateTime endDate = startDate.plusMonths(1).minusDays(1);
-    private boolean byProject = true;
+    private boolean byProject = false;
     private String apiToken;
 
     Config(String[] args) {

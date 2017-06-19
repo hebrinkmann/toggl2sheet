@@ -16,7 +16,7 @@ public class ConfigBuilder {
     private long timeStep = 15 * 60 * 1000;
     private DateTime startDate = DateTime.now().withDayOfMonth(1).withTimeAtStartOfDay();
     private DateTime endDate = startDate.plusMonths(1).minusDays(1);
-    private boolean byProject = true;
+    private boolean byProject = false;
     private String apiToken = "872d2e7bc6d1b11048148d53e5de3541";
 
     private final DateTimeParser[] dateTimeParser = {
