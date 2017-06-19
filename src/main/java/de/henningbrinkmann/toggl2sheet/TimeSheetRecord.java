@@ -1,5 +1,6 @@
 package de.henningbrinkmann.toggl2sheet;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,9 +11,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.joda.time.DateTime;
 
-class TimeSheetRecord implements Comparable<TimeSheetRecord> {
+class TimeSheetRecord implements Comparable<TimeSheetRecord>, Serializable {
 
     public static final String BLANK = "     ";
     final private DateTime start;
@@ -24,23 +26,15 @@ class TimeSheetRecord implements Comparable<TimeSheetRecord> {
     TimeSheetRecord(final List<TogglRecord> togglRecords) {
         final Optional<TogglRecord> minStart = togglRecords.stream()
                 .min((a, b) -> a.getStart().compareTo(b.getStart()));
-        if (minStart.isPresent()) {
-            this.start = minStart.get().getStart();
-        } else {
-            this.start = null;
-        }
+        this.start = minStart.map(TogglRecord::getStart).orElse(null);
 
         final Optional<TogglRecord> maxEnd = togglRecords.stream().max((a, b) -> a.getEnd().compareTo(b.getEnd()));
-        if (maxEnd.isPresent()) {
-            this.end = maxEnd.get().getEnd();
-        } else {
-            this.end = null;
-        }
+        this.end = maxEnd.map(TogglRecord::getEnd).orElse(null);
 
         this.duration = togglRecords.stream()
                 .collect(Collectors.summarizingLong(TogglRecord::getDuration)).getSum();
 
-       durationByProject = togglRecords.stream()
+        durationByProject = togglRecords.stream()
                 .collect(Collectors.toMap(TogglRecord::getProject,
                         TogglRecord::getDuration,
                         (a, b) -> a + b));
@@ -118,7 +112,8 @@ class TimeSheetRecord implements Comparable<TimeSheetRecord> {
         return strings.stream().collect(Collectors.joining("\t"));
     }
 
-    DateTime getStart() {
+    @JsonSerialize(using = JodaDateTimeJsonSerializer.class)
+    public DateTime getStart() {
         return start;
     }
 
@@ -141,5 +136,18 @@ class TimeSheetRecord implements Comparable<TimeSheetRecord> {
         }
 
         return result;
+    }
+
+    @JsonSerialize(using = JodaDateTimeJsonSerializer.class)
+    public DateTime getEnd() {
+        return end;
+    }
+
+    public Map<String, Long> getDurationByProject() {
+        return durationByProject;
+    }
+
+    public Set<String> getDescription() {
+        return description;
     }
 }
