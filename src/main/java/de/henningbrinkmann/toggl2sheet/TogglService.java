@@ -203,15 +203,15 @@ class TogglService {
         return getTimeSheetRecords().stream().collect(Collectors.toMap(keyFunction, Function.identity()));
     }
 
-    List<TimeSheetRecord> getDateTimeSheetRecordsByDateWithMissingDays(DateTime start, DateTime end) {
+    List<TimeSheetRecord> getDateTimeSheetRecordsByDateWithMissingDays() {
         final Map<DateTime, List<TimeSheetRecord>> timeSheetRecordsByDate = getTimeSheetRecordsByDate(config.isByProject()).stream()
                 .collect(groupingBy(t -> t.getStart().withTimeAtStartOfDay()));
         final List<TimeSheetRecord> result = new ArrayList<>();
-        DateTime dateTime = start;
+        DateTime dateTime = config.getStartDate();
         if (dateTime == null) {
             dateTime = DateTime.now().withDayOfMonth(1).withTimeAtStartOfDay();
         }
-        while (!end.isBefore(dateTime)) {
+        while (!config.getEndDate().isBefore(dateTime)) {
             List<TimeSheetRecord> timeSheetRecords = timeSheetRecordsByDate.get(dateTime);
             if (timeSheetRecords == null) {
                 result.add(new TimeSheetRecord(dateTime));
