@@ -4,6 +4,7 @@ import org.joda.time.DateTime;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.HttpRequest;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,10 +22,11 @@ public class Main {
 
     private TogglService togglService;
 
-    @RequestMapping("/current")
+    @RequestMapping(value = "/current", produces = MediaType.TEXT_HTML_VALUE)
     String home(@RequestParam(value = "start", required = false) String start,
-                @RequestParam(value = "end", required = false) String end) {
-        ConfigBuilder configBuilder = new ConfigBuilder().setStartDate(start).setEndDate(end);
+                @RequestParam(value = "end", required = false) String end,
+                @RequestParam(value = "byProject", required = false) Boolean byProject) {
+        ConfigBuilder configBuilder = new ConfigBuilder().setStartDate(start).setEndDate(end).setByProject(byProject != null ? byProject : false);
 
         Config config = configBuilder.createConfig();
 
@@ -41,9 +43,14 @@ public class Main {
                 config.getStartDate(),
                 config.getEndDate());
 
-        StringBuffer info = new StringBuffer(TimeSheetRecord.toHeadings(finalProjects) + LF);
+        StringBuffer info = new StringBuffer("<html><body>");
 
-        timeSheetRecords.forEach(timeSheetRecord -> info.append(timeSheetRecord.toTSV(finalProjects)).append(LF));
+        info.append("<table>");
+        info.append(TimeSheetRecord.toHeadingsHtml(finalProjects) + LF);
+
+        timeSheetRecords.forEach(timeSheetRecord -> info.append(timeSheetRecord.toHtml(finalProjects)).append(LF));
+
+        info.append("</table>");
 
         long estimate = timeSheetRecords.stream().mapToLong(TimeSheetRecord::getDuration).sum();
 
@@ -57,6 +64,8 @@ public class Main {
         info.append("Prognose: ").append(Util.longToHourString(estimate)).append(LF);
 
         info.append(togglService.getEffortsByWeekAndProject());
+
+        info.append("</body></html>");
 
         return info.toString();
     }
