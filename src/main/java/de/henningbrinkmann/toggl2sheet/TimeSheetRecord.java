@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -70,6 +71,19 @@ class TimeSheetRecord implements Comparable<TimeSheetRecord>, Serializable {
     }
 
     String toTSV(final List<String> projects) {
+        final ArrayList<String> strings = getTSRStrings(projects);
+
+
+        return strings.stream().collect(Collectors.joining("\t"));
+    }
+
+    String toHtml(final List<String> projects) {
+        final ArrayList<String> strings = getTSRStrings(projects);
+
+        return strings.stream().collect(Collectors.joining("</td><td>", "<tr><td>", "</td></tr>"));
+    }
+
+    private ArrayList<String> getTSRStrings(List<String> projects) {
         final ArrayList<String> strings = new ArrayList<>();
 
         strings.add(Util.dayFormatter.print(start));
@@ -91,12 +105,16 @@ class TimeSheetRecord implements Comparable<TimeSheetRecord>, Serializable {
         });
 
         strings.add(description.stream().collect(Collectors.joining(", ")));
+        return strings;
+    }
 
+    static String toHeadings(final List<String> projects) {
+        final ArrayList<String> strings = getHeaderStrings(projects);
 
         return strings.stream().collect(Collectors.joining("\t"));
     }
 
-    static String toHeadings(final List<String> projects) {
+    private static ArrayList<String> getHeaderStrings(List<String> projects) {
         final ArrayList<String> strings = new ArrayList<>();
 
         strings.add("Datum   ");
@@ -108,8 +126,13 @@ class TimeSheetRecord implements Comparable<TimeSheetRecord>, Serializable {
         projects.forEach(project -> strings.add(String.format("%5s", project)));
 
         strings.add("Tätigkeit");
+        return strings;
+    }
 
-        return strings.stream().collect(Collectors.joining("\t"));
+    static String toHeadingsHtml(final List<String> projects) {
+        final ArrayList<String> strings = getHeaderStrings(projects);
+
+        return strings.stream().collect(Collectors.joining("</th><th>", "<tr><th>", "</th></tr>"));
     }
 
     @JsonSerialize(using = JodaDateTimeJsonSerializer.class)
