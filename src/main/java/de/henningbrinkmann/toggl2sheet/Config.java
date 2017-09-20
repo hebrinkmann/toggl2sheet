@@ -23,8 +23,10 @@ class Config {
     private long timeStep = 15 * 60 * 1000;
     private DateTime startDate = DateTime.now().withTimeAtStartOfDay().withDayOfMonth(1);
     private DateTime endDate = startDate.plusMonths(1).minusDays(1);
-    private boolean byProject = false;
+    private Grouping grouping = Grouping.CUSTOMER;
     private String apiToken;
+
+    public enum Grouping { PROJECT, TITLE, CUSTOMER, NONE };
 
     Config(String[] args) {
         final CommandLine commandLine = getCommandLine(args);
@@ -49,8 +51,8 @@ class Config {
                     case "endDate":
                         this.endDate = DateTime.parse(option.getValue());
                         break;
-                    case "byProject":
-                        this.byProject = Boolean.parseBoolean(option.getValue());
+                    case "grouping":
+                        this.grouping = Grouping.valueOf(option.getValue());
                         break;
                     case "apiToken":
                         this.apiToken = option.getValue();
@@ -64,14 +66,14 @@ class Config {
 
     }
 
-    public Config(File file, String client, List<String> projects, long timeStep, DateTime startDate, DateTime endDate, boolean byProject, String apiToken) {
+    public Config(File file, String client, List<String> projects, long timeStep, DateTime startDate, DateTime endDate, Grouping grouping, String apiToken) {
         this.file = file;
         this.client = client;
         this.projects = projects;
         this.timeStep = timeStep;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.byProject = byProject;
+        this.grouping = grouping;
         this.apiToken = apiToken;
     }
 
@@ -153,10 +155,6 @@ class Config {
         return timeStep;
     }
 
-    public boolean isByProject() {
-        return byProject;
-    }
-
     public String getApiToken() {
         return apiToken;
     }
@@ -170,7 +168,7 @@ class Config {
                 ", timeStep=" + timeStep +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
-                ", byProject=" + byProject +
+                ", grouping=" + grouping +
                 ", apiToken='" + apiToken + '\'' +
                 '}';
     }
@@ -183,5 +181,7 @@ class Config {
         return endDate;
     }
 
-
+    public Grouping getGrouping() {
+        return grouping;
+    }
 }

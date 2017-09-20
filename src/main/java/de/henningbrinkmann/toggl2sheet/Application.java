@@ -22,8 +22,8 @@ public class Application {
     @RequestMapping(value = "/current", produces = MediaType.TEXT_HTML_VALUE)
     String home(@RequestParam(value = "start", required = false) String start,
                 @RequestParam(value = "end", required = false) String end,
-                @RequestParam(value = "byProject", required = false) Boolean byProject) {
-        ConfigBuilder configBuilder = new ConfigBuilder().setStartDate(start).setEndDate(end).setByProject(byProject != null ? byProject : false);
+                @RequestParam(value = "grouping", required = false) String grouping) {
+        ConfigBuilder configBuilder = new ConfigBuilder().setStartDate(start).setEndDate(end).setGrouping(grouping != null ? Config.Grouping.valueOf(grouping) : Config.Grouping.NONE);
 
         Config config = configBuilder.createConfig();
 

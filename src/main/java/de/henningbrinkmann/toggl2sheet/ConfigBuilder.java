@@ -16,7 +16,7 @@ public class ConfigBuilder {
     private long timeStep = 15 * 60 * 1000;
     private DateTime startDate = DateTime.now().withDayOfMonth(1).withTimeAtStartOfDay();
     private DateTime endDate = startDate.plusMonths(1).minusDays(1);
-    private boolean byProject = false;
+    private Config.Grouping grouping = Config.Grouping.NONE;
     private String apiToken = "872d2e7bc6d1b11048148d53e5de3541";
 
     private final DateTimeParser[] dateTimeParser = {
@@ -55,18 +55,13 @@ public class ConfigBuilder {
         return this;
     }
 
-    public ConfigBuilder setByProject(boolean byProject) {
-        this.byProject = byProject;
-        return this;
-    }
-
     public ConfigBuilder setApiToken(String apiToken) {
         this.apiToken = apiToken;
         return this;
     }
 
     public Config createConfig() {
-        return new Config(file, client, projects, timeStep, startDate, endDate, byProject, apiToken);
+        return new Config(file, client, projects, timeStep, startDate, endDate, grouping, apiToken);
     }
 
     public ConfigBuilder setStartDate(String start) {
@@ -80,6 +75,12 @@ public class ConfigBuilder {
         if (end != null) {
             endDate = dateTimeFormatter.parseDateTime(end);
         }
+        return this;
+    }
+
+    public ConfigBuilder setGrouping(Config.Grouping grouping) {
+        this.grouping = grouping;
+
         return this;
     }
 }

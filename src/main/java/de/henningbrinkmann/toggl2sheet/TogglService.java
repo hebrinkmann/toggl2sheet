@@ -204,7 +204,7 @@ class TogglService {
     }
 
     List<TimeSheetRecord> getDateTimeSheetRecordsByDateWithMissingDays() {
-        final Map<DateTime, List<TimeSheetRecord>> timeSheetRecordsByDate = getTimeSheetRecordsByDate(config.isByProject()).stream()
+        final Map<DateTime, List<TimeSheetRecord>> timeSheetRecordsByDate = getTimeSheetRecordsByDate(config.getGrouping()).stream()
                 .collect(groupingBy(t -> t.getStart().withTimeAtStartOfDay()));
         final List<TimeSheetRecord> result = new ArrayList<>();
         DateTime dateTime = config.getStartDate();
@@ -225,10 +225,21 @@ class TogglService {
         return result;
     }
 
-    List<TimeSheetRecord> getTimeSheetRecordsByDate(boolean byProject) {
+    List<TimeSheetRecord> getTimeSheetRecordsByDate(Config.Grouping grouping) {
         Map<DateTime, Map<String, List<TogglRecord>>> collect = getTogglRecordStreamFiltered().collect(groupingBy(togglRecord -> togglRecord
                 .getStart()
-                .withTimeAtStartOfDay(), groupingBy(t -> byProject ? t.getProject() : "")));
+                .withTimeAtStartOfDay(), groupingBy(t -> {
+            switch (grouping) {
+                case PROJECT:
+                    return t.getProject();
+                case CUSTOMER:
+                    return t.getClient();
+                case TITLE:
+                    return t.getDescription();
+                default:
+                    return "";
+            }
+        })));
         return collect.entrySet().stream().flatMap(e -> e.getValue().entrySet().stream())
                 .map(e1 -> new TimeSheetRecord(e1.getValue()))
                 .sorted()
