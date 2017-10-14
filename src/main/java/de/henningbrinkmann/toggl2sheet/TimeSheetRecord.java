@@ -173,4 +173,15 @@ class TimeSheetRecord implements Comparable<TimeSheetRecord>, Serializable {
     public Set<String> getDescription() {
         return description;
     }
+
+    @Override
+    public String toString() {
+        return "TimeSheetRecord{" +
+                "start=" + start +
+                ", end=" + end +
+                ", duration=" + duration +
+                ", durationByProject=" + durationByProject +
+                ", description=" + description +
+                '}';
+    }
 }
