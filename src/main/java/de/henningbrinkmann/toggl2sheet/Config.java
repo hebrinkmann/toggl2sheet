@@ -26,7 +26,7 @@ class Config {
     private Grouping grouping = Grouping.CUSTOMER;
     private String apiToken;
 
-    public enum Grouping { PROJECT, TITLE, CUSTOMER, NONE };
+    public enum Grouping { PROJECT, TITLE, CUSTOMER, SINGLE, NONE };
 
     Config(String[] args) {
         final CommandLine commandLine = getCommandLine(args);

@@ -1,6 +1,5 @@
 package de.henningbrinkmann.toggl2sheet;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -8,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -21,7 +19,6 @@ import io.rocketbase.toggl.api.model.DetailedResult;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.joining;
@@ -236,6 +233,8 @@ class TogglService {
                     return t.getClient();
                 case TITLE:
                     return t.getDescription();
+                case SINGLE:
+                    return t.toString();
                 default:
                     return "";
             }
