@@ -1,5 +1,8 @@
 package de.henningbrinkmann.toggl2sheet;
 
+import java.util.Collection;
+import java.util.List;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.MediaType;
@@ -7,23 +10,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.List;
-
 @RestController
 @EnableAutoConfiguration
 public class Application {
 
     private static final String LF = System.getProperty("line.separator");
 
-    private TogglService togglService;
-
     @RequestMapping(value = "/current", produces = MediaType.TEXT_HTML_VALUE)
-    String home(@RequestParam(value = "start", required = false) String start,
-                @RequestParam(value = "end", required = false) String end,
-                @RequestParam(value = "grouping", required = false) String grouping) {
-        ConfigBuilder configBuilder = new ConfigBuilder().setStartDate(start).setEndDate(end).setGrouping(grouping != null ? Config.Grouping.valueOf(grouping) : Config.Grouping.NONE);
+    public String home(@RequestParam(value = "start", required = false) String start,
+                       @RequestParam(value = "end", required = false) String end,
+                       @RequestParam(value = "grouping", required = false) String grouping) {
+        ConfigBuilder configBuilder = new ConfigBuilder()
+                .setStartDate(start)
+                .setEndDate(end)
+                .setGrouping(grouping != null ? Config.Grouping.valueOf(grouping) : Config.Grouping.NONE);
 
         Config config = configBuilder.createConfig();
 
@@ -38,10 +38,10 @@ public class Application {
 
         final Collection<TimeSheetRecord> timeSheetRecords = togglService.getDateTimeSheetRecordsByDateWithMissingDays();
 
-        StringBuffer info = new StringBuffer("<html><body>");
+        StringBuilder info = new StringBuilder("<html><body>");
 
         info.append("<table>");
-        info.append(TimeSheetRecord.toHeadingsHtml(finalProjects) + LF);
+        info.append(TimeSheetRecord.toHeadingsHtml(finalProjects)).append(LF);
 
         timeSheetRecords.forEach(timeSheetRecord -> info.append(timeSheetRecord.toHtml(finalProjects)).append(LF));
 
@@ -67,8 +67,12 @@ public class Application {
 
     @RequestMapping("/timesheet")
     public TimeSheet getTimeSheetRecords(@RequestParam(value = "start", required = false) String start,
-                                                     @RequestParam(value = "end", required = false) String end) {
-        ConfigBuilder configBuilder = new ConfigBuilder().setStartDate(start).setEndDate(end);
+                                         @RequestParam(value = "end", required = false) String end,
+                                         @RequestParam(value = "grouping", required = false) String grouping) {
+        ConfigBuilder configBuilder = new ConfigBuilder()
+                .setStartDate(start)
+                .setEndDate(end)
+                .setGrouping(grouping != null ? Config.Grouping.valueOf(grouping) : Config.Grouping.NONE);
 
         Config config = configBuilder.createConfig();
 
@@ -82,7 +86,7 @@ public class Application {
         return new TimeSheet(timeSheetRecords, projects);
     }
 
-    public static void main(String args[]) throws IOException {
+    public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
 }
