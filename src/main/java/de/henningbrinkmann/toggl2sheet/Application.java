@@ -2,7 +2,10 @@ package de.henningbrinkmann.toggl2sheet;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
+import org.joda.time.DateTime;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.MediaType;
@@ -38,17 +41,29 @@ public class Application {
 
         final Collection<TimeSheetRecord> timeSheetRecords = togglService.getDateTimeSheetRecordsByDateWithMissingDays();
 
-        StringBuilder info = new StringBuilder("<html><body>");
+        String style = "<style>"
+            + "tbody:nth-child(2n) { background-color: #eeeeee; } "
+            + "</style>";
+        StringBuilder info = new StringBuilder("<html><head>" + style + "</head><body>");
 
         info.append("<table>");
+        info.append("<thead>");
         info.append(TimeSheetRecord.toHeadingsHtml(finalProjects)).append(LF);
+        info.append("</thead>");
 
-        timeSheetRecords.forEach(timeSheetRecord -> info.append(timeSheetRecord.toHtml(finalProjects)).append(LF));
+        Map<DateTime,List<TimeSheetRecord>> timeSheetRecordsByDay = timeSheetRecords.stream().collect(Collectors.groupingBy(t -> t.getStart().withTimeAtStartOfDay(), Collectors.toList()));
+
+        timeSheetRecordsByDay.keySet().stream().sorted().forEach(date -> {
+            info.append("<tbody>");
+            timeSheetRecordsByDay.get(date).forEach(timeSheetRecord -> info.append(timeSheetRecord.toHtml(finalProjects)).append(LF));
+            info.append("</tbody>").append(LF);
+        });
 
         info.append("</table>");
 
         long estimate = timeSheetRecords.stream().mapToLong(TimeSheetRecord::getDuration).sum();
 
+        info.append("<pre>");
         if (config.getStartDate() != null && config.getEndDate() != null) {
             info.append("Sollarbeitszeit: ").append(Util.longToHourString(Util.getSollarbeitszeit(config.getStartDate(), config.getEndDate()))).
                     append(LF);
@@ -60,6 +75,7 @@ public class Application {
 
         info.append(togglService.getEffortsByWeekAndProject());
 
+        info.append("</pre>");
         info.append("</body></html>");
 
         return info.toString();
