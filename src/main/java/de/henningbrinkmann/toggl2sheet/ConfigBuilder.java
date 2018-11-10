@@ -17,7 +17,7 @@ public class ConfigBuilder {
     private DateTime startDate = DateTime.now().withDayOfMonth(1).withTimeAtStartOfDay();
     private DateTime endDate = startDate.plusMonths(1).minusDays(1);
     private Config.Grouping grouping = Config.Grouping.NONE;
-    private String apiToken = "872d2e7bc6d1b11048148d53e5de3541";
+    private String apiToken = "";
 
     private final DateTimeParser[] dateTimeParser = {
             DateTimeFormat.forPattern("yyyy-MM-dd").getParser()

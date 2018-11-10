@@ -1,9 +1,6 @@
 package de.henningbrinkmann.toggl2sheet;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.util.HashMap;
 
 import org.apache.commons.csv.CSVFormat;
@@ -12,27 +9,34 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 
 
 /**
  * Created by hso72 on 05.04.2017.
  */
-public enum NonWorkingdays {
-    INSTANCE;
+@Component
+public class NonWorkingdays {
+    @Value("${toggl2sheet.nonworkingdays}")
+    private String nonworkingDays;
 
     private final Logger logger = Logger.getLogger(NonWorkingdays.class);
-    public final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("dd.MM.yyyy");
+    private final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("dd.MM.yyyy");
     private final HashMap<DateTime, String> days = new HashMap<>();
 
-    NonWorkingdays() {
-        InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("nonworking.csv");
-        InputStreamReader reader = new InputStreamReader(is);
-
-        try {
+    @PostConstruct
+    public void init() {
+        try (InputStream is = new FileInputStream(new File(nonworkingDays))) {
+            InputStreamReader reader = new InputStreamReader(is);
             read(reader);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     public void read(Reader reader) throws IOException {
