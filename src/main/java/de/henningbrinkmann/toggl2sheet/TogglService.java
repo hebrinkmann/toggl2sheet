@@ -245,6 +245,10 @@ class TogglService {
                 .collect(toList());
     }
 
+    public void clear() {
+        togglRecords = null;
+    }
+
     @Autowired
     public void setUtil(Util util) {
         this.util = util;

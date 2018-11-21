@@ -23,14 +23,14 @@ public class Toggl2SheetRestController {
 
     @RequestMapping(value = "/current", produces = MediaType.TEXT_HTML_VALUE)
     public String home(@RequestParam(value = "start", required = false) String start,
-                       @RequestParam(value = "end", required = false) String end,
-                       @RequestParam(value = "grouping", required = false) String grouping,
-                       @RequestHeader(value = "Toggle-API-Token", required = true) String apitoken) {
+        @RequestParam(value = "end", required = false) String end,
+        @RequestParam(value = "grouping", required = false) String grouping,
+        @RequestHeader(value = "Toggle-API-Token", required = true) String apitoken) {
         ConfigBuilder configBuilder = new ConfigBuilder()
-                .setApiToken(apitoken)
-                .setStartDate(start)
-                .setEndDate(end)
-                .setGrouping(grouping != null ? Config.Grouping.valueOf(grouping) : Config.Grouping.NONE);
+            .setApiToken(apitoken)
+            .setStartDate(start)
+            .setEndDate(end)
+            .setGrouping(grouping != null ? Config.Grouping.valueOf(grouping) : Config.Grouping.NONE);
 
         Config config = configBuilder.createConfig();
 
@@ -44,8 +44,8 @@ public class Toggl2SheetRestController {
         final Collection<TimeSheetRecord> timeSheetRecords = togglService.getDateTimeSheetRecordsByDateWithMissingDays(config);
 
         String style = "<style>"
-                + "tbody:nth-child(2n) { background-color: #eeeeee; } "
-                + "</style>";
+            + "tbody:nth-child(2n) { background-color: #eeeeee; } "
+            + "</style>";
         StringBuilder info = new StringBuilder("<html><head>" + style + "</head><body>");
 
         info.append("<table>");
@@ -68,7 +68,7 @@ public class Toggl2SheetRestController {
         info.append("<pre>");
         if (config.getStartDate() != null && config.getEndDate() != null) {
             info.append("Sollarbeitszeit: ").append(util.longToHourString(util.getSollarbeitszeit(config.getStartDate(), config.getEndDate()))).
-                    append(LF);
+                append(LF);
         }
 
         info.append(togglService.getEfforts(config)).append(LF);
@@ -85,12 +85,14 @@ public class Toggl2SheetRestController {
 
     @RequestMapping("/timesheet")
     public TimeSheet getTimeSheetRecords(@RequestParam(value = "start", required = false) String start,
-                                         @RequestParam(value = "end", required = false) String end,
-                                         @RequestParam(value = "grouping", required = false) String grouping) {
+        @RequestParam(value = "end", required = false) String end,
+        @RequestParam(value = "grouping", required = false) String grouping,
+        @RequestHeader(value = "Toggle-API-Token", required = true) String apitoken) {
         ConfigBuilder configBuilder = new ConfigBuilder()
-                .setStartDate(start)
-                .setEndDate(end)
-                .setGrouping(grouping != null ? Config.Grouping.valueOf(grouping) : Config.Grouping.NONE);
+            .setApiToken(apitoken)
+            .setStartDate(start)
+            .setEndDate(end)
+            .setGrouping(grouping != null ? Config.Grouping.valueOf(grouping) : Config.Grouping.NONE);
 
         Config config = configBuilder.createConfig();
 
@@ -102,6 +104,10 @@ public class Toggl2SheetRestController {
         return new TimeSheet(timeSheetRecords, projects);
     }
 
+    @RequestMapping("/clear")
+    public void clear() {
+        togglService.clear();
+    }
 
     @Autowired
     public void setTogglService(TogglService togglService) {
