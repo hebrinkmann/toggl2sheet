@@ -4,5 +4,11 @@ services:
   toggle2sheet:
     build: target
     restart: always
+    env_file:
+      - .env
+    environment:
+      - toggl2sheet.nonworkingdays=/nonworking.csv
+    volumes:
+      - ${NONWORKING}:/nonworking.csv
     ports:
-      - 8082:8082
+      - 8082:8080
