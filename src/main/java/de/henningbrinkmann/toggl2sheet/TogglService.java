@@ -7,25 +7,22 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BinaryOperator;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import io.rocketbase.toggl.api.GetDetailed;
 import io.rocketbase.toggl.api.TogglReportApi;
 import io.rocketbase.toggl.api.TogglReportApiBuilder;
 import io.rocketbase.toggl.api.model.DetailedResult;
-import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
 
 @Component
 class TogglService {
@@ -38,7 +35,6 @@ class TogglService {
 
     private void read(Reader reader, Config config) throws IOException {
         TogglCSVParser parser = new TogglCSVParser();
-        String client = config.getClient();
 
         togglRecords = parser.parse(reader)
                 .stream()
@@ -46,7 +42,7 @@ class TogglService {
                 .collect(toList());
     }
 
-    public void readFromApi(Config config) {
+    private void readFromApi(Config config) {
         TogglReportApi togglReportApi = new TogglReportApiBuilder().apiToken(config.getApiToken())
                 .userAgent("toggl2sheet")
                 .workspaceId(1397713)
@@ -78,23 +74,6 @@ class TogglService {
         }
     }
 
-    Map<DateTime, List<TogglRecord>> getRecordsByDay(Config config) {
-        Function<TogglRecord, DateTime> keyMapper = TogglRecord::getStartDay;
-        BinaryOperator<List<TogglRecord>> mergeFunction = (a, b) -> {
-            a.addAll(b);
-            return a;
-        };
-        Function<TogglRecord, List<TogglRecord>> valueMapper = togglRecord -> {
-            ArrayList<TogglRecord> result = new ArrayList<>();
-            result.add(togglRecord);
-
-            return result;
-        };
-
-        return getTogglRecordStreamFiltered(config)
-                .collect(toMap(keyMapper, valueMapper, mergeFunction));
-    }
-
     private Stream<TogglRecord> getTogglRecordStreamFiltered(Config config) {
         return getTogglRecords(config).stream()
                 .filter(togglRecord -> {
@@ -112,10 +91,7 @@ class TogglService {
     }
 
     List<String> getProjects(Config config) {
-        ArrayList<String> result = new ArrayList<>();
-        result.addAll(getTogglRecords(config).stream().map(TogglRecord::getProject).collect(Collectors.toSet()));
-
-        return result;
+        return getTogglRecords(config).stream().map(TogglRecord::getProject).distinct().collect(Collectors.toCollection(ArrayList::new));
     }
 
     private List<TogglRecord> getTogglRecords(Config config) {
@@ -133,14 +109,6 @@ class TogglService {
         }
 
         return togglRecords;
-    }
-
-    List<TimeSheetRecord> getTimeSheetRecords(Config config) {
-        return getRecordsByDay(config).entrySet()
-                .stream()
-                .map(entry -> new TimeSheetRecord(entry.getValue()))
-                .sorted((a, b) -> a.getStart().compareTo(b.getStart()))
-                .collect(Collectors.toList());
     }
 
     String getEfforts(Config config) {
@@ -173,33 +141,6 @@ class TogglService {
         }).collect(joining("\n"));
     }
 
-    String getEffortsByDayAndDescription(Config config) {
-        final Map<DateTime, Map<String, Long>> byDayAndDescription = getTogglRecordStreamFiltered(config).collect(groupingBy(
-                TogglRecord::getStartDay,
-                groupingBy(TogglRecord::getDescription, Collectors.summingLong(TogglRecord::getDuration))));
-
-        return byDayAndDescription.entrySet()
-                .stream()
-                .sorted(Comparator.comparing(Map.Entry::getKey))
-                .map(entry -> {
-                    final Stream<String> stringStream = entry.getValue()
-                            .entrySet()
-                            .stream()
-                            .map(entry1 -> "  " + entry1.getKey() + ":\t" + util.longToHourString(entry1.getValue()));
-
-                    final String collect = stringStream.collect(joining("\n"));
-
-                    return entry.getKey().toString() + "\n" + collect;
-                })
-                .collect(joining("\n"));
-    }
-
-    Map<DateTime, TimeSheetRecord> getTimeTimeSheetRecordsByDate(Config config) {
-        Function<TimeSheetRecord, DateTime> keyFunction = timeSheetRecord -> timeSheetRecord.getStart()
-                .withTimeAtStartOfDay();
-        return getTimeSheetRecords(config).stream().collect(Collectors.toMap(keyFunction, Function.identity()));
-    }
-
     List<TimeSheetRecord> getDateTimeSheetRecordsByDateWithMissingDays(Config config) {
         final Map<DateTime, List<TimeSheetRecord>> timeSheetRecordsByDate = getTimeSheetRecordsByDate(config).stream()
                 .collect(groupingBy(t -> t.getStart().withTimeAtStartOfDay()));
@@ -222,7 +163,7 @@ class TogglService {
         return result;
     }
 
-    List<TimeSheetRecord> getTimeSheetRecordsByDate(Config config) {
+    private List<TimeSheetRecord> getTimeSheetRecordsByDate(Config config) {
         Map<DateTime, Map<String, List<TogglRecord>>> collect = getTogglRecordStreamFiltered(config).collect(groupingBy(togglRecord -> togglRecord
                 .getStart()
                 .withTimeAtStartOfDay(), groupingBy(t -> {
@@ -245,7 +186,7 @@ class TogglService {
                 .collect(toList());
     }
 
-    public void clear() {
+    void clear() {
         togglRecords = null;
     }
 
